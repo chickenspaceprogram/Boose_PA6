@@ -3,6 +3,6 @@
 
 int main(void) {
     printf("Hello World\n\nshitpost");
-    Position pos = CURSOR_GET_POSITION();
+    Position pos = cursor_get_position();
     printf("\n\nRow %d, Col %d\n", pos.row, pos.col);
 }

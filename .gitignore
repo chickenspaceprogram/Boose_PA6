@@ -2,3 +2,5 @@
 .DS_Store
 target
 Boose_PA6
+src/ctty/.gitignore
+src/ctty/.input-esc-seqs.txt
