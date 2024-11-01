@@ -8,6 +8,7 @@
 #define BOARD_SIZE 10
 #define CELL_WIDTH 3
 #define CELL_HEIGHT 1
+#define NUMS_OFFSET 7
 
 typedef enum board_type {
     ShotsBoard,

@@ -47,14 +47,34 @@ static void print_board_skeleton(void);
 static void print_solid_row(RowTypes type);
 
 /**
- * Function name: 
+ * Function name: print_dashed_row
  * Date created: 31 Oct 2024
  * Date last modified: 31 Oct 2024
  * Description: 
- * Inputs: 
- * Outputs: 
+ * Inputs: none
+ * Outputs: none
  */
 static void print_dashed_row(void);
+
+/**
+ * Function name: print_numbers
+ * Date created: 1 Nov 2024
+ * Date last modified: 1 Nov 2024
+ * Description: expects to be on the row below the last row
+ * Inputs: none
+ * Outputs: none
+ */
+static void print_numbers(void);
+
+/**
+ * Function name: print_letters
+ * Date created: 1 Nov 2024
+ * Date last modified: 1 Nov 2024
+ * Description: expects to be on the numbers row
+ * Inputs: none
+ * Outputs: none
+ */
+static void print_letters(void);
 
 /* Public methods */
 
@@ -85,10 +105,16 @@ void BoardFactory(Board *board_ptr, BoardType type) {
 
 void print_shots_board(Board *board) {
     print_board_skeleton();
+    print_numbers();
+    print_letters();
+    GETCH();
 }
 
 void print_ships_board(Board *board) {
     print_board_skeleton();
+    print_numbers();
+    print_letters();
+    GETCH();
 }
 
 /* Private methods */
@@ -126,6 +152,8 @@ void print_solid_row(RowTypes type) {
             middle_char = 'v';
             right_side_char = 'j';
             break;
+        default:
+            return;
     }
     putchar(left_side_char);
     for (int i = 0; i < BOARD_SIZE - 1; ++i) { // don't want to print the last cell so that we can print a corner character
@@ -149,4 +177,25 @@ void print_dashed_row(void) {
     CURSOR_TO_COL((CELL_WIDTH + 1) * (BOARD_SIZE + 1) + 1);
     putchar('x');
     putchar('\n');
+}
+
+void print_numbers(void) {
+    CURSOR_UP_LINE_START((BOARD_SIZE + 1) * (CELL_HEIGHT + 1));
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        CURSOR_TO_COL(NUMS_OFFSET + (CELL_WIDTH + 1) * i);
+        if (i < 9) {
+            putchar(i + 1 + '0');
+        }
+        else {
+            putchar('0');
+        }
+    }
+}
+
+void print_letters(void) {
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        CURSOR_DOWN_LINE_START(CELL_HEIGHT + 1);
+        CURSOR_RIGHT(2);
+        putchar(i + 'A');
+    }
 }
