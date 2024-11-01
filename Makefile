@@ -10,7 +10,8 @@
 
 # comments are here since I will have to review this in 6 months and will wonder what it's doing
 
-.PHONY: all clean objects run zip build new copy-files
+.PHONY: all clean objects run zip build new
+# copy-files can be added to phony
 
 # directories and file names
 NAME:=Boose_PA6
@@ -22,8 +23,8 @@ OBJ:=$(TARGET)/obj
 SRC:=src
 ALL_SRCS:=$(shell find . -name "*.c") # gets a space separated list of every source file in src/
 ALL_OBJS:=$(subst ./$(SRC),$(OBJ),$(ALL_SRCS:.c=.o)) # replaces src/ with target/obj/ and .c with .o for each thing in ALL_SRCS
-FILE_SRCS:=$(shell find src -not -type d | grep -v '\.[ch]$$')
-FILE_DESTS:=$(subst $(SRC)/,,$(FILE_SRCS))
+#FILE_SRCS:=$(shell find src -not -type d | grep -v '\.[ch]$$')
+#FILE_DESTS:=$(subst $(SRC)/,,$(FILE_SRCS))
 
 # wrapper for `build`
 all: $(BIN) build $(FILE_DESTS) $(SYMLINK)
@@ -34,9 +35,9 @@ build: $(ALL_OBJS)
 	$(CC) $^ -o $(BIN)/$(NAME)
 
 # this is a very hacky way to put all of the text files in the right places, oh well
-$(FILE_DESTS): $(SRC)/$(FILE_DESTS)
-	mkdir -p $(dir $@)
-	cp $(SRC)/$@ $@
+#$(FILE_DESTS): $(SRC)/$(FILE_DESTS)
+#	mkdir -p $(dir $@)
+#	cp $(SRC)/$@ $@
 
 
 # compiling source files

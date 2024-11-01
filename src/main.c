@@ -1,8 +1,10 @@
 #include <stdio.h>
-#include "ctty/ansi/cursor.h"
+#include "board.h"
+#include <stdlib.h>
 
 int main(void) {
-    printf("Hello World\n\nshitpost");
-    Position pos = cursor_get_position();
-    printf("\n\nRow %d, Col %d\n", pos.row, pos.col);
+    system("clear");
+    Board bored;
+    BoardFactory(&bored, ShotsBoard);
+    bored.print_board(&bored);
 }
