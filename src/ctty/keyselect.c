@@ -9,17 +9,15 @@ int select_char(sequence *sequences, int num_sequences) {
 }
 
 int check_char(sequence *sequences, int num_sequences) {
-    int valid_matches[num_sequences];
-    int longest_match = -1;
-    int j = 0;
-    int current_char = 0;
-    int num_chars_left = num_sequences;
 
+    // allocating the array on the heap since the size of the array is not known at compiletime
+    // unfortunately, MSVC requires the array size to be known at compiletime
+    int *valid_matches = (int *) malloc(num_sequences * sizeof(int));
+    int longest_match = -1, j = 0, current_char = 0, num_chars_left = num_sequences;
 
     for (int i = 0; i < num_sequences; ++i) {
         valid_matches[i] = 1;
     }
-
 
     while (num_chars_left > 0) {
         current_char = GETCH();
@@ -39,5 +37,6 @@ int check_char(sequence *sequences, int num_sequences) {
         ++j;
     }
 
+    free(valid_matches);
     return longest_match;
 }
