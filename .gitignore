@@ -4,3 +4,7 @@ target
 Boose_PA6
 src/ctty/.gitignore
 src/ctty/.input-esc-seqs.txt
+.idea
+cmake-build-debug
+CMakeFiles
+Makefile
