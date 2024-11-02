@@ -11,4 +11,7 @@ add_executable(Boose_PA6 src/main.c
         src/ctty/keypress.h
         src/board.c
         src/ctty/keyselect.c
-        src/ctty/keypress.c)
+        src/ctty/keypress.c
+        src/coord.h
+        src/coord.c
+)
