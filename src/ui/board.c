@@ -1,5 +1,4 @@
 #include "board.h"
-#include "ctty/ansi/cursor.h"
 
 typedef enum row_types {
     Top,
@@ -13,7 +12,7 @@ typedef enum row_types {
  * Date last modified: 1 Nov 2024
  * Description: Prints the board skeleton (everything except for the symbols and colors).
  * Inputs:
- * `struct board *` : The `Board` struct you want to print
+ * `Board *` : The `Board` struct you want to print
  * Outputs: none
  */
 static void print_board(Board *board);
@@ -24,10 +23,23 @@ static void print_board(Board *board);
  * Date last modified: 1 Nov 2024
  * Description: Prints the symbols and colors to go on the board.
  * Inputs:
- * `struct board *` : The `Board` struct you want to print
+ * `Board *` : The `Board` struct you want to print
  * Outputs: none
  */
 static void print_symbols(const Board *board);
+
+/**
+ * Function name: Board->reprint_symbol
+ * Date created: 31 Oct 2024
+ * Date last modified: 1 Nov 2024
+ * Description: Reprints the symbol at a specific location.
+ * Inputs:
+ * `Board *` : Reprints the symbol at a specific location.
+ * `row` : The row of the symbol you want to reprint.
+ * `col` : The column of the symbol you want to reprint.
+ * Outputs: none
+ */
+static void reprint_symbol(const Board *board, int row, int col);
 
 /**
  * Function name: print_board_skeleton
@@ -94,6 +106,7 @@ Board newBoard(void) {
     board.start_position = cursor_get_position();
     board.print_board = &print_board;
     board.print_symbols = &print_symbols;
+    board.reprint_symbol = &reprint_symbol;
     return board;
 }
 
@@ -110,6 +123,14 @@ void print_board(Board *board) {
 }
 
 void print_symbols(const Board *board) {
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        for (int j = 0; j < BOARD_SIZE; ++j) {
+            reprint_symbol(board, i, j);
+        }
+    }
+}
+
+static void reprint_symbol(const Board *board, const int row, const int col) {
     const char *bg_colors[] = {
         BG_DEFAULT,
         BG_BLACK,
@@ -144,20 +165,11 @@ void print_symbols(const Board *board) {
         FG_MAGENTA_BRIGHT,
         FG_WHITE_BRIGHT,
     };
-
-    CURSOR_TO_POSITION(board->start_position.row, board->start_position.col);
-    CURSOR_DOWN(1);
-    for (int i = 0; i < BOARD_SIZE; ++i) {
-        CURSOR_DOWN_LINE_START(CELL_HEIGHT);
-        CURSOR_RIGHT(1);
-        for (int j = 0; j < BOARD_SIZE; ++j) {
-            CURSOR_RIGHT(CELL_WIDTH);
-            printf("%s", bg_colors[(int) board->board[i][j].bg_color]);
-            printf("%s", fg_colors[(int) board->board[i][j].fg_color]);
-            putchar(board->board[i][j].symbol);
-            printf(BG_DEFAULT FG_DEFAULT); // C concatenates string literals automatically
-        }
-    }
+    CURSOR_TO_POSITION(board->start_position.row + (row + 1) * (CELL_HEIGHT + 1) + 1, board->start_position.col + (col + 1) * (CELL_WIDTH + 1) + 1);
+    printf("%s", bg_colors[(int) board->board[row][col].bg_color]);
+    printf("%s", fg_colors[(int) board->board[row][col].fg_color]);
+    putchar(board->board[row][col].symbol);
+    printf(BG_DEFAULT FG_DEFAULT); // C concatenates string literals automatically
 }
 
 /* Private methods */

@@ -10,8 +10,8 @@ static void clear(Coord *coord);
 
 // 1 NOV
 static int normalize_int(int num);
-static void set_bg_color(Color color);
-static void set_fg_color(Color color);
+//static void set_bg_color(Color color);
+//static void set_fg_color(Color color);
 
 /* Declarations */
 
@@ -61,102 +61,4 @@ static int normalize_int(int num) {
         return 10;
     }
     return num;
-}
-
-void set_bg_color(Color color) {
-    switch(color) {
-        case None:
-            break;
-        case Black:
-            printf(BG_BLACK);
-            break;
-        case Red:
-            printf(BG_RED);
-            break;
-        case Green:
-            printf(BG_GREEN);
-            break;
-        case Blue:
-            printf(BG_BLUE);
-            break;
-        case Cyan:
-            printf(BG_CYAN);
-            break;
-        case Magenta:
-            printf(BG_MAGENTA);
-            break;
-        case White:
-            printf(BG_WHITE);
-            break;
-        case BrightBlack:
-            printf(BG_BLACK_BRIGHT);
-            break;
-        case BrightRed:
-            printf(BG_RED_BRIGHT);
-            break;
-        case BrightGreen:
-            printf(BG_GREEN_BRIGHT);
-            break;
-        case BrightBlue:
-            printf(BG_BLUE_BRIGHT);
-            break;
-        case BrightCyan:
-            printf(BG_CYAN_BRIGHT);
-            break;
-        case BrightMagenta:
-            printf(BG_MAGENTA_BRIGHT);
-            break;
-        case BrightWhite:
-            printf(BG_WHITE_BRIGHT);
-            break;
-    }
-}
-
-void set_fg_color(Color color) {
-    switch(color) {
-        case None:
-            break;
-        case Black:
-            printf(FG_BLACK);
-            break;
-        case Red:
-            printf(FG_RED);
-            break;
-        case Green:
-            printf(FG_GREEN);
-            break;
-        case Blue:
-            printf(FG_BLUE);
-            break;
-        case Cyan:
-            printf(FG_CYAN);
-            break;
-        case Magenta:
-            printf(FG_MAGENTA);
-            break;
-        case White:
-            printf(FG_WHITE);
-            break;
-        case BrightBlack:
-            printf(FG_BLACK_BRIGHT);
-            break;
-        case BrightRed:
-            printf(FG_RED_BRIGHT);
-            break;
-        case BrightGreen:
-            printf(FG_GREEN_BRIGHT);
-            break;
-        case BrightBlue:
-            printf(FG_BLUE_BRIGHT);
-            break;
-        case BrightCyan:
-            printf(FG_CYAN_BRIGHT);
-            break;
-        case BrightMagenta:
-            printf(FG_MAGENTA_BRIGHT);
-            break;
-        case BrightWhite:
-            printf(FG_WHITE_BRIGHT);
-            break;
-    }
 }

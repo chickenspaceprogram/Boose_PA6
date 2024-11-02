@@ -1,9 +1,15 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "ctty/ansi/colors.h"
-#include "ctty/ansi/cursor.h"
-#include "ctty/ansi/text-modes.h"
+
+/*
+This is some very cursed graphics programming.
+I don't even think *I* completely get how it works, half of it is the result of fiddling with numbers until it looked right.
+*/
+
+#include "../ctty/ansi/colors.h"
+#include "../ctty/ansi/cursor.h"
+#include "../ctty/ansi/text-modes.h"
 
 #define BOARD_SIZE 10
 #define CELL_WIDTH 3
@@ -48,7 +54,7 @@ struct board {
      * Date last modified: 1 Nov 2024
      * Description: Prints the board skeleton (everything except for the symbols and colors).
      * Inputs: 
-     * `struct board *` : The `Board` struct you want to print
+     * `Board *` : The `Board` struct you want to print
      * Outputs: none
      */
     void (*print_board)(Board *);
@@ -59,10 +65,22 @@ struct board {
      * Date last modified: 1 Nov 2024
      * Description: Prints the symbols and colors to go on the board.
      * Inputs:
-     * `struct board *` : The `Board` struct you want to print
+     * `Board *` : The `Board` struct you want to print
      * Outputs: none
      */
     void (*print_symbols)(const Board *);
+
+    /**
+     * Function name: Board->reprint_symbol
+     * Date created: 31 Oct 2024
+     * Date last modified: 1 Nov 2024
+     * Description: Reprints the symbol at a specific location.
+     * Inputs:
+     * `Board *` : The `Board` struct you want to print
+     *
+     * Outputs: none
+     */
+    void (*reprint_symbol)(const Board *, const int, const int);
 };
 
 /**

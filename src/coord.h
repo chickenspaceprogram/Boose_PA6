@@ -3,7 +3,7 @@
 
 #include "ctty/ansi/cursor.h"
 #include "ctty/ansi/colors.h"
-#include "board.h"
+#include "ui/board.h"
 
 typedef struct coord Coord;
 
