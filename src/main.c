@@ -5,7 +5,7 @@
 
 int main(void) {
     system("clear");
-    Board bored;
-    BoardFactory(&bored, ShotsBoard);
+    Board bored = newBoard();
     bored.print_board(&bored);
+    GETCH();
 }

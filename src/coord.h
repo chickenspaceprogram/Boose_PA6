@@ -5,24 +5,6 @@
 #include "ctty/ansi/colors.h"
 #include "board.h"
 
-typedef enum {
-    None,
-    Black,
-    Red,
-    Green,
-    Blue,
-    Cyan,
-    Magenta,
-    White,
-    BrightBlack,
-    BrightRed,
-    BrightGreen,
-    BrightBlue,
-    BrightCyan,
-    BrightMagenta,
-    BrightWhite,
-} Color;
-
 typedef struct coord Coord;
 
 struct coord {

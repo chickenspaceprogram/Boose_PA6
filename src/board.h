@@ -8,56 +8,71 @@
 #define BOARD_SIZE 10
 #define CELL_WIDTH 3
 #define CELL_HEIGHT 1
-#define NUMS_OFFSET 7
+#define NUMS_OFFSET 1
 
-typedef enum board_type {
-    ShotsBoard,
-    ShipsBoard,
-} BoardType;
+typedef enum {
+    None = 0,
+    Black,
+    Red,
+    Green,
+    Blue,
+    Cyan,
+    Magenta,
+    White,
+    BrightBlack,
+    BrightRed,
+    BrightGreen,
+    BrightBlue,
+    BrightCyan,
+    BrightMagenta,
+    BrightWhite,
+} Color;
 
-typedef enum ships {
-    NoShip,
-    Destroyer,
-    Submarine,
-    Cruiser,
-    Battleship,
-    Carrier,
-} Ships;
+typedef struct {
+    Color bg_color;
+    Color fg_color;
+    char symbol;
+} PrintInfo;
 
-typedef enum shots {
-    NoShot,
-    Miss,
-    Hit,
-} Shots;
 
 
 typedef struct board Board;
-// OOP in C is cursed but it felt very natural here
+// OOP in C is cursed but it felt natural here
 struct board {
-    int board[BOARD_SIZE][BOARD_SIZE];
-    BoardType type;
+    PrintInfo board[BOARD_SIZE][BOARD_SIZE];
+    Position start_position;
 
     /**
      * Function name: Board->print_board
      * Date created: 31 Oct 2024
-     * Date last modified: 31 Oct 2024
-     * Description: Prints the board.
+     * Date last modified: 1 Nov 2024
+     * Description: Prints the board skeleton (everything except for the symbols and colors).
      * Inputs: 
      * `struct board *` : The `Board` struct you want to print
      * Outputs: none
      */
     void (*print_board)(Board *);
+
+    /**
+     * Function name: Board->print_symbols
+     * Date created: 31 Oct 2024
+     * Date last modified: 1 Nov 2024
+     * Description: Prints the symbols and colors to go on the board.
+     * Inputs:
+     * `struct board *` : The `Board` struct you want to print
+     * Outputs: none
+     */
+    void (*print_symbols)(const Board *);
 };
 
 /**
- * Function name: BoardFactory
+ * Function name: newBoard
  * Date created: 31 Oct 2024
- * Date last modified: 31 Oct 2024
- * Description: Instantiates a new Board of the desired BoardType.
- *              this is pretty cursed to do in C
- * Inputs: 
- * Outputs: none
+ * Date last modified: 1 Nov 2024
+ * Description: Creates a new, empty board.
+ * Inputs: none
+ * Outputs: The created board.
  */
-void BoardFactory(Board *board_ptr, BoardType type);
+Board newBoard(void);
 
 #endif

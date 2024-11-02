@@ -14,4 +14,9 @@ add_executable(Boose_PA6 src/main.c
         src/ctty/keypress.c
         src/coord.h
         src/coord.c
+        src/ctty/ansi/colors.h
+        src/ctty/ansi/cursor.c
+        src/ctty/ansi/cursor.h
+        src/ctty/ansi/erase.h
+        src/ctty/ansi/text-modes.h
 )
