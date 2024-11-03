@@ -45,7 +45,7 @@ struct board {
      * Function name: Board->print_board
      * Date created: 31 Oct 2024
      * Date last modified: 1 Nov 2024
-     * Description: Prints the board skeleton (everything except for the symbols and colors).
+     * Description: 
      * Inputs: 
      * `Board *` : The `Board` struct you want to print
      * Outputs: none

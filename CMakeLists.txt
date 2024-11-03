@@ -20,4 +20,6 @@ add_executable(Boose_PA6 src/main.c
         src/ctty/ansi/colors.c
         src/ui/select-shot-spot.c
         src/ui/select-shot-spot.h
+        src/ui/place-ships.c
+        src/ui/place-ships.h
 )
