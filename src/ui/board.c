@@ -193,6 +193,8 @@ static void reprint_symbol(const Board *board, const int row, const int col) {
 
 void print_shot_message(Board *board) {
     // this is pretty cursed and messy. however, it does work!
+    PrintInfo hit_print_info = HIT_PRINT_INFO;
+    PrintInfo miss_print_info = MISS_PRINT_INFO;
 
     // printing text
     CURSOR_TO_MSG_POS(0);
@@ -210,7 +212,11 @@ void print_shot_message(Board *board) {
     CURSOR_TO_MSG_POS(7);
     printf(MODE_DRAW"lqqqk");
     CURSOR_TO_MSG_POS(8);
-    printf("x"MODE_DRAW_RESET" * "MODE_DRAW"x"MODE_DRAW_RESET" : Hit");
+    printf("x"MODE_DRAW_RESET);
+    set_color(hit_print_info.fg_color, hit_print_info.bg_color);
+    printf(" * ");
+    set_color(Default, Default);
+    printf(MODE_DRAW"x"MODE_DRAW_RESET" : Hit");
     CURSOR_TO_MSG_POS(9);
     printf(MODE_DRAW"mqqqj");
 
@@ -218,7 +224,11 @@ void print_shot_message(Board *board) {
     CURSOR_TO_MSG_POS(11);
     printf(MODE_DRAW"lqqqk");
     CURSOR_TO_MSG_POS(12);
-    printf("x"MODE_DRAW_RESET" m "MODE_DRAW"x"MODE_DRAW_RESET" : Miss");
+    printf("x"MODE_DRAW_RESET);
+    set_color(miss_print_info.fg_color, miss_print_info.bg_color);
+    printf(" m ");
+    set_color(Default, Default);
+    printf(MODE_DRAW"x"MODE_DRAW_RESET" : Miss");
     CURSOR_TO_MSG_POS(13);
     printf(MODE_DRAW"mqqqj");
 

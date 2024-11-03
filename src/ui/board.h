@@ -18,6 +18,9 @@ This is some very cursed graphics programming, sorry if it's darn near unintelli
 #define MSG_START_ROW 3
 #define MSG_START_COL 47
 
+#define HIT_PRINT_INFO  {.bg_color = BrightRed, .fg_color = BrightWhite, .symbol = '*', .color_all_spaces = 1}
+#define MISS_PRINT_INFO {.bg_color = BrightWhite, .fg_color = Black, .symbol = 'm', .color_all_spaces = 1}
+
 typedef enum {
     Ships,
     Shots,

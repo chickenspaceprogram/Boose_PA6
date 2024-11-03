@@ -5,11 +5,9 @@
 int main(void) {
     system("clear");
     Board bored = newBoard(Shots);
-    bored.board[3][3].bg_color = BrightWhite;
-    bored.board[3][3].fg_color = Black;
-    bored.board[3][3].symbol = 'm';
-    bored.board[8][2].bg_color = BrightRed;
-    bored.board[8][2].fg_color = BrightWhite;
-    bored.board[8][2].symbol = '*';
+    PrintInfo miss = MISS_PRINT_INFO;
+    PrintInfo hit = HIT_PRINT_INFO;
+    bored.board[3][3] = miss;
+    bored.board[8][2] = hit;
     select_spot(&bored);
 }
