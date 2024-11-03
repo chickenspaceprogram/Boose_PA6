@@ -6,5 +6,7 @@
 int main(void) {
     system("clear");
     Board bored = newBoard(Ships);
+    printf(HIDE_CURSOR);
     place_ships(&bored);
+    printf(SHOW_CURSOR);
 }
