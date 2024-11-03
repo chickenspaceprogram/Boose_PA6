@@ -9,19 +9,20 @@ typedef enum {
     Enter,
 } Keys;
 
-void place_ships(Board *board) {
+void place_ships(Board *board, ShipInfo *ships) {
     ShipInfo current_ship_info = {
         .position = {.row = 4, .col = 4},
         .orientation = Horizontal,
+        .ship_is_hit = 0,
     };
     board->print_board(board);
     for (int i = 0; i < NUM_SHIPS; ++i) {
         current_ship_info.ship = (Ship) i;
-        place_single_ship(board, current_ship_info);
+        ships[i] = place_single_ship(board, current_ship_info);
     }
 }
 
-void place_single_ship(Board *board, ShipInfo ship_info) {
+ShipInfo place_single_ship(Board *board, ShipInfo ship_info) {
     Board last_valid_board = *board;
     static const PrintInfo ships_print_info[] = {
         DESTROYER_PRINT_INFO,
@@ -49,6 +50,7 @@ void place_single_ship(Board *board, ShipInfo ship_info) {
             ship_info = next_ship_info;
         }
     } while (!(has_pressed_enter && spot_is_valid(&last_valid_board, ship_info)));
+    return ship_info;
 }
 
 int spot_is_valid(Board *board, ShipInfo ship_info) {
