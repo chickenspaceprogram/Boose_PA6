@@ -1,20 +1,16 @@
 #include "board.h"
 
+// basically just a magic macro to make some functions here less ugly
+#define CURSOR_TO_MSG_POS(row_offset)   CURSOR_TO_POSITION(board->start_position.row + MSG_START_ROW + row_offset, board->start_position.col + MSG_START_COL);
+
 typedef enum row_types {
     Top,
     Middle,
     Bottom,
 } RowTypes;
 
-/**
- * Function name: print_board
- * Date created: 31 Oct 2024
- * Date last modified: 1 Nov 2024
- * Description: Prints the board skeleton (everything except for the symbols and colors).
- * Inputs:
- * `Board *` : The `Board` struct you want to print
- * Outputs: none
- */
+/* Public Method Declarations */
+
 static void print_board(Board *board);
 
 /**
@@ -40,6 +36,40 @@ static void print_symbols(const Board *board);
  * Outputs: none
  */
 static void reprint_symbol(const Board *board, int row, int col);
+
+/**
+ * Function name: print_shot_message
+ * Date created: 2 Nov 2024
+ * Date last modified: 2 Nov 2024
+ * Description: Prints the message that accompanies the board where the user picks a space to shoot at.
+ * Inputs: none
+ * Outputs: none
+ */
+static void print_shot_message(Board *board);
+
+/**
+ * Function name: print_ship_message
+ * Date created: 2 Nov 2024
+ * Date last modified: 2 Nov 2024
+ * Description: Prints the message that accompanies the board where the user picks locations for their ships.
+ * Inputs: none
+ * Outputs: none
+ */
+static void print_ship_message(Board *board);
+
+
+/* Private Method Declarations */
+
+/**
+ * Function name: print_board
+ * Date created: 31 Oct 2024
+ * Date last modified: 1 Nov 2024
+ * Description: Prints the board, except for the symbols and colors.
+ * Inputs:
+ * `Board *` : The `Board` struct you want to print
+ * Outputs: none
+ */
+static void print_board_outline(Board *board);
 
 /**
  * Function name: print_board_skeleton
@@ -93,7 +123,7 @@ static void print_letters(void);
 
 /* Public methods */
 
-Board newBoard(void) {
+Board newBoard(BoardType type) {
     Board board;
     PrintInfo blank_info = {.bg_color = None, .fg_color = None, .symbol = ' '};
 
@@ -107,11 +137,24 @@ Board newBoard(void) {
     board.print_board = &print_board;
     board.print_symbols = &print_symbols;
     board.reprint_symbol = &reprint_symbol;
+    switch (type) {
+        case Ships:
+            board.print_message = &print_ship_message;
+            break;
+        case Shots:
+            board.print_message = &print_shot_message;
+            break;
+    }
     return board;
 }
 
+static void print_board(Board *board) {
+    print_board_outline(board);
+    board->print_symbols(board);
+    board->print_message(board);
+}
 
-void print_board(Board *board) {
+void print_board_outline(Board *board) {
     board->start_position = cursor_get_position();
     CURSOR_DOWN_LINE_START(1);
     print_board_skeleton();
@@ -171,6 +214,48 @@ static void reprint_symbol(const Board *board, const int row, const int col) {
     putchar(board->board[row][col].symbol);
     printf(BG_DEFAULT FG_DEFAULT); // C concatenates string literals automatically
 }
+
+void print_shot_message(Board *board) {
+    // this is pretty cursed and messy. however, it does work!
+
+    // printing text
+    CURSOR_TO_MSG_POS(0);
+    printf("Select a spot you haven't fired");
+    CURSOR_TO_MSG_POS(1);
+    printf("at before using either the");
+    CURSOR_TO_MSG_POS(2);
+    printf("arrow keys or keys 1-0 and a-j,");
+    CURSOR_TO_MSG_POS(3);
+    printf("then press [Enter].");
+    CURSOR_TO_MSG_POS(5);
+    printf("Key:");
+
+    // printing "Hit" box
+    CURSOR_TO_MSG_POS(7);
+    printf(MODE_DRAW"lqqqk");
+    CURSOR_TO_MSG_POS(8);
+    printf("x"MODE_DRAW_RESET" * "MODE_DRAW"x"MODE_DRAW_RESET" : Hit");
+    CURSOR_TO_MSG_POS(9);
+    printf(MODE_DRAW"mqqqj");
+
+    // printing "Miss" box
+    CURSOR_TO_MSG_POS(11);
+    printf(MODE_DRAW"lqqqk");
+    CURSOR_TO_MSG_POS(12);
+    printf("x"MODE_DRAW_RESET" m "MODE_DRAW"x"MODE_DRAW_RESET" : Miss");
+    CURSOR_TO_MSG_POS(13);
+    printf(MODE_DRAW"mqqqj");
+
+    CURSOR_TO_MSG_POS(15);
+    printf(MODE_DRAW"lqqqk");
+    CURSOR_TO_MSG_POS(16);
+    printf("x"MODE_DRAW_RESET"   "MODE_DRAW"x"MODE_DRAW_RESET" : No shot made");
+    CURSOR_TO_MSG_POS(17);
+    printf(MODE_DRAW"mqqqj"MODE_DRAW_RESET);
+
+}
+
+void print_ship_message(Board *board) {}
 
 /* Private methods */
 

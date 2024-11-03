@@ -17,4 +17,6 @@ add_executable(Boose_PA6 src/main.c
         src/ctty/ansi/cursor.h
         src/ctty/ansi/erase.h
         src/ctty/ansi/text-modes.h
+        src/ui/select-shot-spot.c
+        src/ui/select-shot-spot.h
 )

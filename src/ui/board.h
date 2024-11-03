@@ -3,8 +3,7 @@
 
 
 /*
-This is some very cursed graphics programming.
-I don't even think *I* completely get how it works, half of it is the result of fiddling with numbers until it looked right.
+This is some very cursed graphics programming, sorry if it's darn near unintelligible.
 */
 
 #include "../ctty/ansi/colors.h"
@@ -15,6 +14,14 @@ I don't even think *I* completely get how it works, half of it is the result of 
 #define CELL_WIDTH 3
 #define CELL_HEIGHT 1
 #define NUMS_OFFSET 1
+
+#define MSG_START_ROW 3
+#define MSG_START_COL 47
+
+typedef enum {
+    Ships,
+    Shots,
+} BoardType;
 
 typedef enum {
     None = 0,
@@ -81,6 +88,8 @@ struct board {
      * Outputs: none
      */
     void (*reprint_symbol)(const Board *, const int, const int);
+
+    void (*print_message)(Board *);
 };
 
 /**
@@ -91,6 +100,6 @@ struct board {
  * Inputs: none
  * Outputs: The created board.
  */
-Board newBoard(void);
+Board newBoard(BoardType type);
 
 #endif
