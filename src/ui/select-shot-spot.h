@@ -8,7 +8,7 @@
 #include "../ctty/keypress-codes.h"
 #include "../ctty/ansi/cursor.h"
 
-#define CURSOR_PRINT_INFO {.bg_color = BrightCyan, .fg_color = Black, .symbol = '+'}
+#define CURSOR_PRINT_INFO {.bg_color = BrightCyan, .fg_color = Default, .symbol = '+'}
 
 typedef struct {
     int row;

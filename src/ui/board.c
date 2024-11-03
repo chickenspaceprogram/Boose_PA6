@@ -125,7 +125,7 @@ static void print_letters(void);
 
 Board newBoard(BoardType type) {
     Board board;
-    PrintInfo blank_info = {.bg_color = None, .fg_color = None, .symbol = ' '};
+    PrintInfo blank_info = {.bg_color = Default, .fg_color = Default, .symbol = ' ', .color_all_spaces = 1};
 
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
@@ -174,45 +174,21 @@ void print_symbols(const Board *board) {
 }
 
 static void reprint_symbol(const Board *board, const int row, const int col) {
-    const char *bg_colors[] = {
-        BG_DEFAULT,
-        BG_BLACK,
-        BG_RED,
-        BG_GREEN,
-        BG_BLUE,
-        BG_CYAN,
-        BG_MAGENTA,
-        BG_WHITE,
-        BG_BLACK_BRIGHT,
-        BG_RED_BRIGHT,
-        BG_GREEN_BRIGHT,
-        BG_BLUE_BRIGHT,
-        BG_CYAN_BRIGHT,
-        BG_MAGENTA_BRIGHT,
-        BG_WHITE_BRIGHT,
-    };
-    const char *fg_colors[] = {
-        FG_DEFAULT,
-        FG_BLACK,
-        FG_RED,
-        FG_GREEN,
-        FG_BLUE,
-        FG_CYAN,
-        FG_MAGENTA,
-        FG_WHITE,
-        FG_BLACK_BRIGHT,
-        FG_RED_BRIGHT,
-        FG_GREEN_BRIGHT,
-        FG_BLUE_BRIGHT,
-        FG_CYAN_BRIGHT,
-        FG_MAGENTA_BRIGHT,
-        FG_WHITE_BRIGHT,
-    };
     CURSOR_TO_POSITION(board->start_position.row + (row + 1) * (CELL_HEIGHT + 1) + 1, board->start_position.col + (col + 1) * (CELL_WIDTH + 1) + 1);
-    printf("%s", bg_colors[(int) board->board[row][col].bg_color]);
-    printf("%s", fg_colors[(int) board->board[row][col].fg_color]);
-    putchar(board->board[row][col].symbol);
-    printf(BG_DEFAULT FG_DEFAULT); // C concatenates string literals automatically
+    set_color(board->board[row][col].fg_color, board->board[row][col].bg_color);
+
+    if (board->board[row][col].color_all_spaces) {
+        // this is done like this since coloring 3 spaces was an afterthought. sorry that it's so hacky
+        CURSOR_LEFT(1);
+        putchar(' ');
+        putchar(board->board[row][col].symbol);
+        putchar(' ');
+        CURSOR_RIGHT(1);
+    }
+    else {
+        putchar(board->board[row][col].symbol);
+    }
+    set_color(Default, Default);
 }
 
 void print_shot_message(Board *board) {

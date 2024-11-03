@@ -23,28 +23,11 @@ typedef enum {
     Shots,
 } BoardType;
 
-typedef enum {
-    None = 0,
-    Black,
-    Red,
-    Green,
-    Blue,
-    Cyan,
-    Magenta,
-    White,
-    BrightBlack,
-    BrightRed,
-    BrightGreen,
-    BrightBlue,
-    BrightCyan,
-    BrightMagenta,
-    BrightWhite,
-} Color;
-
 typedef struct {
     Color bg_color;
     Color fg_color;
     char symbol;
+    int color_all_spaces;
 } PrintInfo;
 
 
