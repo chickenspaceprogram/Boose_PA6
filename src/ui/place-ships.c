@@ -8,8 +8,48 @@ typedef enum {
     Space,
     Enter,
 } Keys;
+static void printship(ShipInfo ship);
+void printship(ShipInfo ship) {
+    printf("Ship: ");
+    switch (ship.ship) {
+        case Destroyer:
+            printf("Destroyer\n");
+            break;
+        case Submarine:
+            printf("Submarine\n");
+            break;
+        case Cruiser:
+            printf("Cruiser\n");
+            break;
+        case Battleship:
+            printf("Battleship\n");
+            break;
+        case Carrier:
+            printf("Carrier\n");
+            break;
+    }
+    if (ship.position.col == 9) {
+        ship.position.col = -1;
+    }
+    printf("Position: {%c, %c}\n", ship.position.row + 'a', ship.position.col + '1');
+    printf("ship_is_hit: ");
+    if (ship.ship_is_hit) {
+        printf("True\n");
+    }
+    else {
+        printf("False\n");
+    }
+    printf("Orientation: ");
+    if (ship.orientation == Horizontal) {
+        printf("Horizontal\n");
+    }
+    else {
+        printf("Vertical\n");
+    }
+    
+}
 
-void place_ships(Board *board, ShipInfo *ships) {
+void player_place_ships(Board *board, ShipInfo *ships) {
     ShipInfo current_ship_info = {
         .position = {.row = 4, .col = 4},
         .orientation = Horizontal,
@@ -19,6 +59,34 @@ void place_ships(Board *board, ShipInfo *ships) {
     for (int i = 0; i < NUM_SHIPS; ++i) {
         current_ship_info.ship = (Ship) i;
         ships[i] = place_single_ship(board, current_ship_info);
+    }
+}
+
+void rand_place_ships(Board *board, ShipInfo *ships) {
+    int max_row, max_col;
+    static const PrintInfo ships_print_info[] = {
+        DESTROYER_PRINT_INFO,
+        SUBMARINE_PRINT_INFO,
+        CRUISER_PRINT_INFO,
+        BATTLESHIP_PRINT_INFO,
+        CARRIER_PRINT_INFO,
+    };
+    PrintInfo current_ship_print_info[5];
+
+    board->print_board(board);
+    for (int i = 0; i < NUM_SHIPS; ++i) {
+        ships[i].ship_is_hit = 0;
+        ships[i].ship = (Ship) i;
+        do {
+            ships[i].orientation = (Orientation) randint(0, 1);
+            set_max_row_col(ships[i], &max_row, &max_col);
+            ships[i].position.row = randint(0, max_row);
+            ships[i].position.col = randint(0, max_col);
+        } while (!spot_is_valid(board, ships[i]));
+        for (int j = 0; j < NUM_SHIPS; ++j) {
+            current_ship_print_info[j] = ships_print_info[i];
+        }
+        print_ship(board, ships[i], current_ship_print_info);
     }
 }
 
@@ -36,7 +104,7 @@ ShipInfo place_single_ship(Board *board, ShipInfo ship_info) {
     PrintInfo board_print_info[5], ship_print_info[5];
     save_ship(board, ship_info, board_print_info);
 
-    for (int i = 0; i < get_ship_len(ship_info.ship); ++i) {
+    for (int i = 0; i < NUM_SHIPS; ++i) {
         ship_print_info[i] = ships_print_info[(int)ship_info.ship];
     }
 

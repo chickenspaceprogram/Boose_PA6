@@ -23,4 +23,6 @@ add_executable(Boose_PA6
         ../src/ui/select-shot-spot.h
         ../src/ui/place-ships.c
         ../src/ui/place-ships.h
+        ../src/rand.c
+        ../src/rand.h
 )

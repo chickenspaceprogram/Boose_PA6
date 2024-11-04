@@ -1,15 +1,19 @@
 #include <stdlib.h>
 #include "ui/board.h"
 #include "ui/place-ships.h"
+#include "ctty/screen.h"
+#include "rand.h"
 
 void printship(ShipInfo ship);
 
 int main(void) {
+    seed_rand();
     system("clear");
     Board bored = newBoard(Ships);
     ShipInfo ships[5];
     printf(HIDE_CURSOR);
-    place_ships(&bored, ships);
+    rand_place_ships(&bored, ships);
+    PAUSE();
     printf(SHOW_CURSOR);
     system("clear");
     for (int i = 0; i < 5; ++i) {

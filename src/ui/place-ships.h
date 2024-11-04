@@ -4,10 +4,12 @@
 #include "../ctty/ansi/cursor.h"
 #include "../ctty/keyselect.h"
 #include "../ctty/keypress-codes.h"
+#include "../rand.h"
+#include "../ctty/screen.h"
 #include "board.h"
 
 typedef enum {
-    Destroyer,
+    Destroyer = 0,
     Submarine,
     Cruiser,
     Battleship,
@@ -23,7 +25,7 @@ typedef enum {
 #define CARRIER_PRINT_INFO      {.bg_color = Cyan, .fg_color = BrightWhite, .symbol = 'c', .color_all_spaces = 1}
 
 typedef enum {
-    Horizontal,
+    Horizontal = 0,
     Vertical,
 } Orientation;
 
@@ -46,7 +48,9 @@ typedef struct {
  * `ships` : The array to store the ship positions in.
  * Outputs: none
  */
-void place_ships(Board *board, ShipInfo *ships);
+void player_place_ships(Board *board, ShipInfo *ships);
+
+void rand_place_ships(Board *board, ShipInfo *ships);
 
 /**
  * Function name: place_single_ship
