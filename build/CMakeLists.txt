@@ -25,4 +25,6 @@ add_executable(Boose_PA6
         ../src/ui/place-ships.h
         ../src/rand.c
         ../src/rand.h
+        ../src/ui/menu.h
+        ../src/ui/menu.c
 )
