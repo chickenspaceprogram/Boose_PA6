@@ -12,7 +12,7 @@ int main(void) {
     Board bored = newBoard(Ships);
     ShipInfo ships[5];
     printf(HIDE_CURSOR);
-    rand_place_ships(&bored, ships);
+    player_place_ships(&bored, ships);
     PAUSE();
     printf(SHOW_CURSOR);
     system("clear");
