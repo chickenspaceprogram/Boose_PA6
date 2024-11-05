@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 #include "board.h"
-#include "../ctty/keyselect.h"
-#include "../ctty/keypress-codes.h"
+#include "../ctty/keypress/keyselect.h"
+#include "../ctty/keypress/keypress-codes.h"
 #include "../ctty/ansi/cursor.h"
 
 #define CURSOR_PRINT_INFO {.bg_color = BrightCyan, .fg_color = Black, .symbol = '+', .color_all_spaces = 0}

@@ -38,7 +38,7 @@ ShotCoords select_spot(Board *board) {
     Keypress keypress = -1;
     board->print_board(board);
 
-    printf(HIDE_CURSOR);
+    printf(CURSOR_OFF);
     board->board[current_coords.row][current_coords.col] = cursor_print_info;
     board->reprint_symbol(board, current_coords.row, current_coords.col);
     do {
@@ -61,7 +61,7 @@ ShotCoords select_spot(Board *board) {
         	board->reprint_symbol(board, current_coords.row, current_coords.col);
         }
     } while (!(keypress == Enter && spot_print_info.symbol == ' '));
-    printf(SHOW_CURSOR);
+    printf(CURSOR_ON);
     return current_coords;
 }
 

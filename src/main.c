@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include "ui/board.h"
 #include "ui/place-ships.h"
-#include "ctty/screen.h"
+#include "ctty/screen/screen.h"
+#include "ctty/ansi/cursor.h"
 #include "rand.h"
 
 void printship(ShipInfo ship);
@@ -11,10 +12,10 @@ int main(void) {
     system("clear");
     Board bored = newBoard(Ships);
     ShipInfo ships[5];
-    printf(HIDE_CURSOR);
+    printf(CURSOR_OFF);
     player_place_ships(&bored, ships);
     PAUSE();
-    printf(SHOW_CURSOR);
+    printf(CURSOR_ON);
     system("clear");
     for (int i = 0; i < 5; ++i) {
         printship(ships[i]);

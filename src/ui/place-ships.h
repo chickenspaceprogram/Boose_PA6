@@ -2,10 +2,10 @@
 #define UI_PLACE_SHIPS_H
 
 #include "../ctty/ansi/cursor.h"
-#include "../ctty/keyselect.h"
-#include "../ctty/keypress-codes.h"
+#include "../ctty/keypress/keyselect.h"
+#include "../ctty/keypress/keypress-codes.h"
 #include "../rand.h"
-#include "../ctty/screen.h"
+#include "../ctty/screen/screen.h"
 #include "board.h"
 
 typedef enum {

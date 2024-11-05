@@ -14,4 +14,4 @@ add_executable(Boose_PA6
         ../src/rand.c
         ../src/rand.h
 )
-target_link_libraries(Boose_PA6 INTERFACE ctty)
+target_link_libraries(Boose_PA6 ctty)
