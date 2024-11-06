@@ -9,44 +9,22 @@ typedef enum {
     Enter,
 } Keys;
 static void printship(ShipInfo ship);
-void printship(ShipInfo ship) {
-    printf("Ship: ");
-    switch (ship.ship) {
-        case Destroyer:
-            printf("Destroyer\n");
-            break;
-        case Submarine:
-            printf("Submarine\n");
-            break;
-        case Cruiser:
-            printf("Cruiser\n");
-            break;
-        case Battleship:
-            printf("Battleship\n");
-            break;
-        case Carrier:
-            printf("Carrier\n");
-            break;
+
+void place_ships(Board *board, ShipInfo *ships) {
+    Option options[] = {
+        {.msg = (unsigned char *)"1. Place ships manually", .sequence = (unsigned char *)"1"},
+        {.msg = (unsigned char *)"2. Place ships randomly", .sequence = (unsigned char *)"2"},
+    };
+    unsigned char *title = (unsigned char *)"Select Ship Placement";
+    size_t selection = menu(options, title, 2);
+    CLEAR_SCREEN();
+    if (selection == 0) {
+        player_place_ships(board, ships);
     }
-    if (ship.position.col == 9) {
-        ship.position.col = -1;
+    else if (selection == 1) {
+        rand_place_ships(board, ships);
+        PAUSE();
     }
-    printf("Position: {%c, %c}\n", ship.position.row + 'a', ship.position.col + '1');
-    printf("ship_is_hit: ");
-    if (ship.ship_is_hit) {
-        printf("True\n");
-    }
-    else {
-        printf("False\n");
-    }
-    printf("Orientation: ");
-    if (ship.orientation == Horizontal) {
-        printf("Horizontal\n");
-    }
-    else {
-        printf("Vertical\n");
-    }
-    
 }
 
 void player_place_ships(Board *board, ShipInfo *ships) {

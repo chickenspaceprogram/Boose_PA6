@@ -6,6 +6,7 @@
 #include "../ctty/keypress/keypress-codes.h"
 #include "../rand.h"
 #include "../ctty/screen/screen.h"
+#include "../ctty/menu/menu.h"
 #include "board.h"
 
 typedef enum {
@@ -36,6 +37,9 @@ typedef struct {
     int ship_is_hit;
 } ShipInfo;
 
+// 5 nov
+void place_ships(Board *board, ShipInfo *ships);
+
 /**
  * Function name: place_ships
  * Date created: 3 Nov 2024
@@ -50,6 +54,7 @@ typedef struct {
  */
 void player_place_ships(Board *board, ShipInfo *ships);
 
+// 3 nov
 void rand_place_ships(Board *board, ShipInfo *ships);
 
 /**

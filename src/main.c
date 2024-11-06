@@ -4,22 +4,18 @@
 #include "ctty/screen/screen.h"
 #include "ctty/ansi/cursor.h"
 #include "rand.h"
+#include "ctty/menu/menu.h"
 
 void printship(ShipInfo ship);
 
 int main(void) {
     seed_rand();
-    system("clear");
+    CLEAR_SCREEN();
     Board bored = newBoard(Ships);
     ShipInfo ships[5];
     printf(CURSOR_OFF);
-    player_place_ships(&bored, ships);
-    PAUSE();
+    place_ships(&bored, ships);
     printf(CURSOR_ON);
-    system("clear");
-    for (int i = 0; i < 5; ++i) {
-        printship(ships[i]);
-    }
 }
 
 void printship(ShipInfo ship) {
