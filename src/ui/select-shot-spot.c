@@ -1,5 +1,13 @@
 #include "select-shot-spot.h"
 
+/**
+ * Function name: 
+ * Date created: 2 Nov 2024
+ * Date last modified: 2 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 static ShotCoords move_cursor(ShotCoords cursor_pos, Keypress keypress);
 
 ShotCoords select_spot(Board *board) {
@@ -35,6 +43,8 @@ ShotCoords select_spot(Board *board) {
         CTTY_ENTER,
     };
     Keypress keypress = -1;
+
+    CLEAR_SCREEN();
     board->print_board(board);
 
     printf(CURSOR_OFF);
@@ -59,7 +69,10 @@ ShotCoords select_spot(Board *board) {
         	set_cursor_print_info(&(board->board[current_coords.row][current_coords.col]));
         	board->reprint_symbol(board, current_coords.row, current_coords.col);
         }
-    } while (!(keypress == Enter && spot_print_info.symbol[1] == ' '));
+    } while (!(keypress == Enter && spot_print_info.symbol[1] == ' ')); 
+
+    // resetting formatting at current cursor position, no need to redisplay though
+    board->board[current_coords.row][current_coords.col] = spot_print_info;
     printf(CURSOR_ON);
     return current_coords;
 }

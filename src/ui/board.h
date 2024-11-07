@@ -95,8 +95,24 @@ struct board {
  */
 Board newBoard(BoardType type);
 
+/**
+ * Function name: 
+ * Date created: 6 Nov 2024
+ * Date last modified: 6 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 PrintInfo set_hit_print_info(PrintInfo spot_print_info);
 
+/**
+ * Function name: 
+ * Date created: 6 Nov 2024
+ * Date last modified: 6 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 PrintInfo set_miss_print_info(PrintInfo spot_print_info);
 
 #endif

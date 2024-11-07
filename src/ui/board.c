@@ -11,6 +11,14 @@ typedef enum row_types {
 
 /* Public Method Declarations */
 
+/**
+ * Function name: 
+ * Date created: 1 Nov 2024
+ * Date last modified: 1 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 static void print_board(Board *board);
 
 /**

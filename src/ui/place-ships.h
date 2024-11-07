@@ -37,7 +37,14 @@ typedef struct {
     int ship_is_hit;
 } ShipInfo;
 
-// 5 nov
+/**
+ * Function name: 
+ * Date created: 5 Nov 2024
+ * Date last modified: 5 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 void place_ships(Board *board, ShipInfo *ships);
 
 /**
@@ -54,7 +61,14 @@ void place_ships(Board *board, ShipInfo *ships);
  */
 void player_place_ships(Board *board, ShipInfo *ships);
 
-// 3 nov
+/**
+ * Function name: 
+ * Date created: 3 Nov 2024
+ * Date last modified: 3 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 void rand_place_ships(Board *board, ShipInfo *ships);
 
 /**

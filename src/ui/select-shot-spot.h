@@ -7,6 +7,7 @@
 #include "../ctty/keypress/keyselect.h"
 #include "../ctty/keypress/keypress-codes.h"
 #include "../ctty/ansi/cursor.h"
+#include "../ctty/screen/screen.h"
 
 typedef struct {
     int row;
@@ -41,10 +42,34 @@ typedef enum {
     Enter,
 } Keypress;
 
+/**
+ * Function name: 
+ * Date created: 2 Nov 2024
+ * Date last modified: 6 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 ShotCoords select_spot(Board *board);
 
+/**
+ * Function name: 
+ * Date created: 2 Nov 2024
+ * Date last modified: 2 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 ShotCoords normalize_spot(ShotCoords spot, int max_row, int max_col);
 
+/**
+ * Function name: 
+ * Date created: 6 Nov 2024
+ * Date last modified: 6 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
 void set_cursor_print_info(PrintInfo *info);
 
 #endif
