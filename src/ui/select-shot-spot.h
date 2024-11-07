@@ -8,8 +8,6 @@
 #include "../ctty/keypress/keypress-codes.h"
 #include "../ctty/ansi/cursor.h"
 
-#define CURSOR_PRINT_INFO {.bg_color = BrightCyan, .fg_color = Black, .symbol = '+', .color_all_spaces = 0}
-
 typedef struct {
     int row;
     int col;
@@ -46,5 +44,7 @@ typedef enum {
 ShotCoords select_spot(Board *board);
 
 ShotCoords normalize_spot(ShotCoords spot, int max_row, int max_col);
+
+void set_cursor_print_info(PrintInfo *info);
 
 #endif

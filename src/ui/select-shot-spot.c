@@ -6,7 +6,6 @@ ShotCoords select_spot(Board *board) {
     ShotCoords current_coords = {.row = 4, .col = 4};
     ShotCoords next_coords;
     PrintInfo spot_print_info = board->board[current_coords.row][current_coords.col];
-    PrintInfo cursor_print_info = CURSOR_PRINT_INFO;
 
     sequence valid_keypresses[] = {
         CTTY_1,
@@ -39,7 +38,7 @@ ShotCoords select_spot(Board *board) {
     board->print_board(board);
 
     printf(CURSOR_OFF);
-    board->board[current_coords.row][current_coords.col] = cursor_print_info;
+    set_cursor_print_info(&(board->board[current_coords.row][current_coords.col]));
     board->reprint_symbol(board, current_coords.row, current_coords.col);
     do {
 
@@ -57,10 +56,10 @@ ShotCoords select_spot(Board *board) {
 
             // saving print info at the spot and printing the cursor there
         	spot_print_info = board->board[current_coords.row][current_coords.col];
-        	board->board[current_coords.row][current_coords.col] = cursor_print_info;
+        	set_cursor_print_info(&(board->board[current_coords.row][current_coords.col]));
         	board->reprint_symbol(board, current_coords.row, current_coords.col);
         }
-    } while (!(keypress == Enter && spot_print_info.symbol == ' '));
+    } while (!(keypress == Enter && spot_print_info.symbol[1] == ' '));
     printf(CURSOR_ON);
     return current_coords;
 }
@@ -79,6 +78,12 @@ ShotCoords normalize_spot(ShotCoords spot, int max_row, int max_col) {
         spot.col = max_col;
     }
     return spot;
+}
+
+void set_cursor_print_info(PrintInfo *info) {
+    info->bg_color[1] = BrightCyan;
+    info->fg_color[1] = Black;
+    info->symbol[1] = '+';
 }
 
 static ShotCoords move_cursor(ShotCoords cursor_pos, Keypress keypress) {

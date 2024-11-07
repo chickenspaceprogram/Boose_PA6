@@ -1,7 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-
 /*
 This is some very cursed graphics programming, sorry if it's darn near unintelligible.
 */
@@ -9,6 +8,8 @@ This is some very cursed graphics programming, sorry if it's darn near unintelli
 #include "../ctty/ansi/colors.h"
 #include "../ctty/ansi/cursor.h"
 #include "../ctty/ansi/text-modes.h"
+
+#include "../ctty/screen/screen.h"
 
 #define BOARD_SIZE 10
 #define CELL_WIDTH 3
@@ -18,8 +19,15 @@ This is some very cursed graphics programming, sorry if it's darn near unintelli
 #define MSG_START_ROW 3
 #define MSG_START_COL 47
 
-#define HIT_PRINT_INFO  {.bg_color = BrightRed, .fg_color = BrightWhite, .symbol = '*', .color_all_spaces = 1}
-#define MISS_PRINT_INFO {.bg_color = BrightWhite, .fg_color = Black, .symbol = 'm', .color_all_spaces = 1}
+#define HIT_SYMBOL '*'
+#define HIT_BG_COLOR BrightRed
+#define HIT_FG_COLOR BrightWhite
+
+#define MISS_SYMBOL 'm'
+#define MISS_BG_COLOR BrightWhite
+#define MISS_FG_COLOR Black
+
+#define BLANK_PRINT_INFO {.bg_color = {Default, Default, Default}, .fg_color = {Default, Default, Default}, .symbol = "   "}
 
 typedef enum {
     Ships,
@@ -27,10 +35,9 @@ typedef enum {
 } BoardType;
 
 typedef struct {
-    Color bg_color;
-    Color fg_color;
-    char symbol;
-    int color_all_spaces;
+    Color bg_color[3];
+    Color fg_color[3];
+    char symbol[3];
 } PrintInfo;
 
 
@@ -87,5 +94,9 @@ struct board {
  * Outputs: The created board.
  */
 Board newBoard(BoardType type);
+
+PrintInfo set_hit_print_info(PrintInfo spot_print_info);
+
+PrintInfo set_miss_print_info(PrintInfo spot_print_info);
 
 #endif

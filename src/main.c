@@ -5,6 +5,7 @@
 #include "ctty/ansi/cursor.h"
 #include "rand.h"
 #include "ctty/menu/menu.h"
+#include "ui/select-shot-spot.h"
 
 void printship(ShipInfo ship);
 
@@ -14,8 +15,14 @@ int main(void) {
     Board bored = newBoard(Ships);
     ShipInfo ships[5];
     printf(CURSOR_OFF);
-    place_ships(&bored, ships);
-    printf(CURSOR_ON);
+    //place_ships(&bored, ships);
+    PAUSE();
+    CLEAR_SCREEN();
+    Board twobored = newBoard(Shots);
+    twobored.board[2][2] = set_hit_print_info(bored.board[2][2]);
+    select_spot(&twobored);
+
+
 }
 
 void printship(ShipInfo ship) {

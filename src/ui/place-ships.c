@@ -104,14 +104,14 @@ int spot_is_valid(Board *board, ShipInfo ship_info) {
 
     if (ship_info.orientation == Horizontal) {
         for (int i = ship_info.position.col; i < ship_info.position.col + ship_len; ++i) {
-            if (board->board[ship_info.position.row][i].symbol != ' ') {
+            if (board->board[ship_info.position.row][i].symbol[1] != ' ') {
                 return 0;
             }
         }
     }
     else {
         for (int i = ship_info.position.row; i < ship_info.position.row + ship_len; ++i) {
-            if (board->board[i][ship_info.position.col].symbol != ' ') {
+            if (board->board[i][ship_info.position.col].symbol[1] != ' ') {
                 return 0;
             }
         }

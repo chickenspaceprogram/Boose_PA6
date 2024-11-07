@@ -125,7 +125,7 @@ static void print_letters(void);
 
 Board newBoard(BoardType type) {
     Board board;
-    PrintInfo blank_info = {.bg_color = Default, .fg_color = Default, .symbol = ' ', .color_all_spaces = 1};
+    PrintInfo blank_info = BLANK_PRINT_INFO;
 
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
@@ -150,13 +150,13 @@ Board newBoard(BoardType type) {
 
 static void print_board(Board *board) {
     print_board_outline(board);
-    board->print_symbols(board);
-    board->print_message(board);
+    //board->print_symbols(board);
+    //board->print_message(board);
 }
 
-void print_board_outline(Board *board) {
+static void print_board_outline(Board *board) {
     board->start_position = cursor_get_position();
-    CURSOR_DOWN_LINE_START(1);
+    printf("row=%d, col=%d\n", board->start_position.row, board->start_position.col);
     print_board_skeleton();
     CURSOR_TO_POSITION(board->start_position.row, board->start_position.col);
     print_numbers();
@@ -165,7 +165,7 @@ void print_board_outline(Board *board) {
     CURSOR_TO_POSITION(board->start_position.row, board->start_position.col);
 }
 
-void print_symbols(const Board *board) {
+static void print_symbols(const Board *board) {
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
             reprint_symbol(board, i, j);
@@ -174,78 +174,80 @@ void print_symbols(const Board *board) {
 }
 
 static void reprint_symbol(const Board *board, const int row, const int col) {
-    CURSOR_TO_POSITION(board->start_position.row + (row + 1) * (CELL_HEIGHT + 1) + 1, board->start_position.col + (col + 1) * (CELL_WIDTH + 1) + 1);
-    set_color(board->board[row][col].fg_color, board->board[row][col].bg_color);
+    CURSOR_TO_POSITION(board->start_position.row + (row + 1) * (CELL_HEIGHT + 1) + 1, board->start_position.col + (col + 1) * (CELL_WIDTH + 1));
 
-    if (board->board[row][col].color_all_spaces) {
-        // this is done like this since coloring 3 spaces was an afterthought. sorry that it's so hacky
-        CURSOR_LEFT(1);
-        putchar(' ');
-        putchar(board->board[row][col].symbol);
-        putchar(' ');
-        CURSOR_RIGHT(1);
-    }
-    else {
-        putchar(board->board[row][col].symbol);
+    for (int i = 0; i < CELL_WIDTH; ++i) {
+        set_color(board->board[row][col].fg_color[i], board->board[row][col].bg_color[i]);
+        putchar(board->board[row][col].symbol[i]);
     }
     set_color(Default, Default);
+    CURSOR_LEFT(1); // dont remember why this has to be here, but it breaks without it :)
 }
 
-void print_shot_message(Board *board) {
+static void print_shot_message(Board *board) {
     // this is pretty cursed and messy. however, it does work!
-    PrintInfo hit_print_info = HIT_PRINT_INFO;
-    PrintInfo miss_print_info = MISS_PRINT_INFO;
+    PrintInfo blank_info = BLANK_PRINT_INFO;
+    PrintInfo hit_print_info = set_hit_print_info(blank_info);
+    PrintInfo miss_print_info = set_miss_print_info(blank_info);
+
+
 
     // printing text
     CURSOR_TO_MSG_POS(0);
-    printf("Select a spot you haven't fired");
+    fputs("Select a spot you haven't fired", stdout);
     CURSOR_TO_MSG_POS(1);
-    printf("at before using either the");
+    fputs("at before using either the", stdout);
     CURSOR_TO_MSG_POS(2);
-    printf("arrow keys or keys 1-0 and a-j,");
+    fputs("arrow keys or keys 1-0 and a-j,", stdout);
     CURSOR_TO_MSG_POS(3);
-    printf("then press [Enter].");
+    fputs("then press [Enter].", stdout);
     CURSOR_TO_MSG_POS(5);
-    printf("Key:");
+    fputs("Key:", stdout);
 
     // printing "Hit" box
     CURSOR_TO_MSG_POS(7);
-    printf(MODE_DRAW"lqqqk");
+    fputs(MODE_DRAW"lqqqk", stdout);
     CURSOR_TO_MSG_POS(8);
-    printf("x"MODE_DRAW_RESET);
-    set_color(hit_print_info.fg_color, hit_print_info.bg_color);
-    printf(" * ");
+    fputs("x"MODE_DRAW_RESET, stdout);
+    putchar(' ');
+    set_color(hit_print_info.fg_color[1], hit_print_info.bg_color[1]);
+    putchar(HIT_SYMBOL);
     set_color(Default, Default);
-    printf(MODE_DRAW"x"MODE_DRAW_RESET" : Hit");
+    putchar(' ');
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Hit", stdout);
     CURSOR_TO_MSG_POS(9);
-    printf(MODE_DRAW"mqqqj");
+    fputs(MODE_DRAW"mqqqj", stdout);
 
     // printing "Miss" box
     CURSOR_TO_MSG_POS(11);
-    printf(MODE_DRAW"lqqqk");
+    fputs(MODE_DRAW"lqqqk", stdout);
     CURSOR_TO_MSG_POS(12);
-    printf("x"MODE_DRAW_RESET);
-    set_color(miss_print_info.fg_color, miss_print_info.bg_color);
-    printf(" m ");
+    fputs("x"MODE_DRAW_RESET, stdout);
+    putchar(' ');
+    set_color(miss_print_info.fg_color[1], miss_print_info.bg_color[1]);
+    putchar('m');
     set_color(Default, Default);
-    printf(MODE_DRAW"x"MODE_DRAW_RESET" : Miss");
+    putchar(' ');
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Miss", stdout);
     CURSOR_TO_MSG_POS(13);
-    printf(MODE_DRAW"mqqqj");
+    fputs(MODE_DRAW"mqqqj", stdout);
 
     CURSOR_TO_MSG_POS(15);
-    printf(MODE_DRAW"lqqqk");
+    fputs(MODE_DRAW"lqqqk", stdout);
     CURSOR_TO_MSG_POS(16);
-    printf("x"MODE_DRAW_RESET"   "MODE_DRAW"x"MODE_DRAW_RESET" : No shot made");
+    fputs("x"MODE_DRAW_RESET"   "MODE_DRAW"x"MODE_DRAW_RESET" : No shot made", stdout);
     CURSOR_TO_MSG_POS(17);
-    printf(MODE_DRAW"mqqqj"MODE_DRAW_RESET);
+    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
 
 }
 
-void print_ship_message(Board *board) {}
+static void print_ship_message(Board *board) {
+    //printf("errm what the sigma");
+}
 
 /* Private methods */
 
-void print_board_skeleton(void) {
+static void print_board_skeleton(void) {
     printf(MODE_DRAW);
     print_solid_row(Top);
     for (int i = 0; i < BOARD_SIZE - 1; ++i) {
@@ -257,7 +259,7 @@ void print_board_skeleton(void) {
     printf(MODE_DRAW_RESET);
 }
 
-void print_solid_row(RowTypes type) {
+static void print_solid_row(RowTypes type) {
     CURSOR_DOWN_LINE_START(1);
     CURSOR_RIGHT(CELL_WIDTH);
     char left_side_char, middle_char, right_side_char;
@@ -293,7 +295,7 @@ void print_solid_row(RowTypes type) {
     putchar(right_side_char);
 }
 
-void print_dashed_row(void) {
+static void print_dashed_row(void) {
     CURSOR_DOWN_LINE_START(1);
     for (int i = 0; i < BOARD_SIZE; ++i) {
         CURSOR_RIGHT(CELL_WIDTH);
@@ -303,7 +305,7 @@ void print_dashed_row(void) {
     putchar('x');
 }
 
-void print_numbers(void) {
+static void print_numbers(void) {
     CURSOR_DOWN(CELL_HEIGHT);
     CURSOR_RIGHT(NUMS_OFFSET + 1);
     for (int i = 0; i < BOARD_SIZE; ++i) {
@@ -317,11 +319,25 @@ void print_numbers(void) {
     }
 }
 
-void print_letters(void) {
+static void print_letters(void) {
     CURSOR_DOWN(CELL_HEIGHT);
     for (int i = 0; i < BOARD_SIZE; ++i) {
         CURSOR_DOWN_LINE_START(CELL_HEIGHT + 1);
         CURSOR_RIGHT(1);
         putchar(i + 'A');
     }
+}
+
+PrintInfo set_hit_print_info(PrintInfo spot_print_info) {
+    spot_print_info.bg_color[1] = HIT_BG_COLOR;
+    spot_print_info.fg_color[1] = HIT_FG_COLOR;
+    spot_print_info.symbol[1] = HIT_SYMBOL;
+    return spot_print_info;
+}
+
+PrintInfo set_miss_print_info(PrintInfo spot_print_info) {
+    spot_print_info.bg_color[1] = MISS_BG_COLOR;
+    spot_print_info.fg_color[1] = MISS_FG_COLOR;
+    spot_print_info.symbol[1] = MISS_SYMBOL;
+    return spot_print_info;
 }
