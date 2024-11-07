@@ -150,13 +150,13 @@ Board newBoard(BoardType type) {
 
 static void print_board(Board *board) {
     print_board_outline(board);
-    //board->print_symbols(board);
-    //board->print_message(board);
+    board->print_symbols(board);
+    board->print_message(board);
 }
 
 static void print_board_outline(Board *board) {
     board->start_position = cursor_get_position();
-    printf("row=%d, col=%d\n", board->start_position.row, board->start_position.col);
+    CURSOR_DOWN_LINE_START(1);
     print_board_skeleton();
     CURSOR_TO_POSITION(board->start_position.row, board->start_position.col);
     print_numbers();

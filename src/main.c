@@ -15,7 +15,7 @@ int main(void) {
     Board bored = newBoard(Ships);
     ShipInfo ships[5];
     printf(CURSOR_OFF);
-    //place_ships(&bored, ships);
+    place_ships(&bored, ships);
     PAUSE();
     CLEAR_SCREEN();
     Board twobored = newBoard(Shots);
