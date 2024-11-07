@@ -19,7 +19,7 @@ int main(void) {
     PAUSE();
     CLEAR_SCREEN();
     Board twobored = newBoard(Shots);
-    twobored.board[2][2] = set_hit_print_info(bored.board[2][2]);
+    twobored.board[2][2] = set_hit_print_info(twobored.board[2][2]);
     select_spot(&twobored);
 
 
