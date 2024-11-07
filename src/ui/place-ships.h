@@ -8,6 +8,7 @@
 #include "../ctty/screen/screen.h"
 #include "../ctty/menu/menu.h"
 #include "board.h"
+#include "space-print-info.h"
 
 typedef enum {
     Destroyer = 0,
@@ -18,12 +19,6 @@ typedef enum {
 } Ship;
 
 #define NUM_SHIPS               5
-
-#define DESTROYER_PRINT_INFO    {.bg_color = {BrightGreen, BrightGreen, BrightGreen}, .fg_color = {BrightWhite, BrightWhite, BrightWhite}, .symbol = " d "}
-#define SUBMARINE_PRINT_INFO    {.bg_color = {Yellow, Yellow, Yellow}, .fg_color = {BrightWhite, BrightWhite, BrightWhite}, .symbol = " s "}
-#define CRUISER_PRINT_INFO      {.bg_color = {BrightBlue, BrightBlue, BrightBlue}, .fg_color = {BrightWhite, BrightWhite, BrightWhite}, .symbol = " r "}
-#define BATTLESHIP_PRINT_INFO   {.bg_color = {Magenta, Magenta, Magenta}, .fg_color = {BrightWhite, BrightWhite, BrightWhite}, .symbol = " b "}
-#define CARRIER_PRINT_INFO      {.bg_color = {Cyan, Cyan, Cyan}, .fg_color = {BrightWhite, BrightWhite, BrightWhite}, .symbol = " c "}
 
 typedef enum {
     Horizontal = 0,

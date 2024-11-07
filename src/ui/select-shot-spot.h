@@ -43,7 +43,7 @@ typedef enum {
 } Keypress;
 
 /**
- * Function name: 
+ * Function name: select_spot
  * Date created: 2 Nov 2024
  * Date last modified: 6 Nov 2024
  * Description: 
@@ -53,7 +53,7 @@ typedef enum {
 ShotCoords select_spot(Board *board);
 
 /**
- * Function name: 
+ * Function name: normalize_spot
  * Date created: 2 Nov 2024
  * Date last modified: 2 Nov 2024
  * Description: 
@@ -63,7 +63,7 @@ ShotCoords select_spot(Board *board);
 ShotCoords normalize_spot(ShotCoords spot, int max_row, int max_col);
 
 /**
- * Function name: 
+ * Function name: set_cursor_print_info
  * Date created: 6 Nov 2024
  * Date last modified: 6 Nov 2024
  * Description: 

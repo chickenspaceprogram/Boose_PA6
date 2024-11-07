@@ -59,6 +59,8 @@ void rand_place_ships(Board *board, ShipInfo *ships) {
         CARRIER_PRINT_INFO,
     };
     PrintInfo current_ship_print_info[5];
+    
+    board->print_message = &print_rand_ship_message;
 
     board->print_board(board);
     for (int i = 0; i < NUM_SHIPS; ++i) {
@@ -73,6 +75,7 @@ void rand_place_ships(Board *board, ShipInfo *ships) {
         for (int j = 0; j < NUM_SHIPS; ++j) {
             current_ship_print_info[j] = ships_print_info[i];
         }
+
         print_ship(board, ships[i], current_ship_print_info);
     }
 }

@@ -24,6 +24,7 @@ int check_ship_sunk(Board *shots_board, ShipInfo ship);
  * Inputs: 
  * Outputs: Returns the index of the ship that was sunk, or -1 if none were.
  */
-Ship get_newly_sunk_ship(ShipInfo *ships);
+
+int get_newly_sunk_ship(Board *shots_board, ShipInfo *ships);
 
 #endif

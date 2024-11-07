@@ -1,7 +1,5 @@
 #include "board.h"
 
-// basically just a magic macro to make some functions here less ugly
-#define CURSOR_TO_MSG_POS(row_offset)   CURSOR_TO_POSITION(board->start_position.row + MSG_START_ROW + row_offset, board->start_position.col + MSG_START_COL);
 
 typedef enum row_types {
     Top,
@@ -44,27 +42,6 @@ static void print_symbols(const Board *board);
  * Outputs: none
  */
 static void reprint_symbol(const Board *board, int row, int col);
-
-/**
- * Function name: print_shot_message
- * Date created: 2 Nov 2024
- * Date last modified: 2 Nov 2024
- * Description: Prints the message that accompanies the board where the user picks a space to shoot at.
- * Inputs: none
- * Outputs: none
- */
-static void print_shot_message(Board *board);
-
-/**
- * Function name: print_ship_message
- * Date created: 2 Nov 2024
- * Date last modified: 2 Nov 2024
- * Description: Prints the message that accompanies the board where the user picks locations for their ships.
- * Inputs: none
- * Outputs: none
- */
-static void print_ship_message(Board *board);
-
 
 /* Private Method Declarations */
 
@@ -147,7 +124,7 @@ Board newBoard(BoardType type) {
     board.reprint_symbol = &reprint_symbol;
     switch (type) {
         case Ships:
-            board.print_message = &print_ship_message;
+            board.print_message = &print_ship_placement_message;
             break;
         case Shots:
             board.print_message = &print_shot_message;
@@ -192,7 +169,21 @@ static void reprint_symbol(const Board *board, const int row, const int col) {
     CURSOR_LEFT(1); // dont remember why this has to be here, but it breaks without it :)
 }
 
-static void print_shot_message(Board *board) {
+PrintInfo set_hit_print_info(PrintInfo spot_print_info) {
+    spot_print_info.bg_color[1] = HIT_BG_COLOR;
+    spot_print_info.fg_color[1] = HIT_FG_COLOR;
+    spot_print_info.symbol[1] = HIT_SYMBOL;
+    return spot_print_info;
+}
+
+PrintInfo set_miss_print_info(PrintInfo spot_print_info) {
+    spot_print_info.bg_color[1] = MISS_BG_COLOR;
+    spot_print_info.fg_color[1] = MISS_FG_COLOR;
+    spot_print_info.symbol[1] = MISS_SYMBOL;
+    return spot_print_info;
+}
+
+void print_shot_message(Board *board) {
     // this is pretty cursed and messy. however, it does work!
     PrintInfo blank_info = BLANK_PRINT_INFO;
     PrintInfo hit_print_info = set_hit_print_info(blank_info);
@@ -249,9 +240,168 @@ static void print_shot_message(Board *board) {
 
 }
 
-static void print_ship_message(Board *board) {
-    //printf("errm what the sigma");
+void print_ship_placement_message(Board *board) {
+    static const PrintInfo ships_print_info[] = {
+        DESTROYER_PRINT_INFO,
+        SUBMARINE_PRINT_INFO,
+        CRUISER_PRINT_INFO,
+        BATTLESHIP_PRINT_INFO,
+        CARRIER_PRINT_INFO,
+    };
+    CURSOR_TO_MSG_POS(0);
+
+    // printing msg txt  
+    fputs("Use the arrow keys to move each", stdout);
+    CURSOR_TO_MSG_POS(1);
+    fputs("ship to the desired position.", stdout);
+    CURSOR_TO_MSG_POS(2);
+    fputs("Press [Space] to change the", stdout);
+    CURSOR_TO_MSG_POS(3);
+    fputs("orientation of the ship, and", stdout);
+    CURSOR_TO_MSG_POS(4);
+    fputs("press [Enter] to place the", stdout);
+    CURSOR_TO_MSG_POS(5);
+    fputs("ship at the selected location.", stdout);
+
+    // printing ship types
+    CURSOR_TO_MSG_POS(7);
+    fputs("Ship types:", stdout);
+
+    CURSOR_TO_MSG_POS(9);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(10);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(DESTROYER_FG_COLOR, DESTROYER_BG_COLOR);
+    fputs(DESTROYER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Destroyer", stdout);
+    
+    CURSOR_TO_MSG_POS(11);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(12);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(SUBMARINE_FG_COLOR, SUBMARINE_BG_COLOR);
+    fputs(SUBMARINE_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Submarine", stdout);
+
+    CURSOR_TO_MSG_POS(13);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(14);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CRUISER_FG_COLOR, CRUISER_BG_COLOR);
+    fputs(CRUISER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Cruiser", stdout);
+
+    CURSOR_TO_MSG_POS(15);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(16);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(BATTLESHIP_FG_COLOR, BATTLESHIP_BG_COLOR);
+    fputs(BATTLESHIP_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Battleship", stdout);
+
+    CURSOR_TO_MSG_POS(17);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(18);
+
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CARRIER_FG_COLOR, CARRIER_BG_COLOR);
+    fputs(CARRIER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Carrier", stdout);
+
+    CURSOR_TO_MSG_POS(19);
+    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
+
 }
+
+void print_rand_ship_message(Board *board) {
+    static const PrintInfo ships_print_info[] = {
+        DESTROYER_PRINT_INFO,
+        SUBMARINE_PRINT_INFO,
+        CRUISER_PRINT_INFO,
+        BATTLESHIP_PRINT_INFO,
+        CARRIER_PRINT_INFO,
+    };
+    CURSOR_TO_MSG_POS(0);
+
+    // printing msg txt  
+    fputs("Your ships have been randomly", stdout);
+    CURSOR_TO_MSG_POS(1);
+    fputs("placed in the locations", stdout);
+    CURSOR_TO_MSG_POS(2);
+    fputs("displayed here. Press any key", stdout);
+    CURSOR_TO_MSG_POS(3);
+    fputs("to continue . . .", stdout);
+
+    // printing ship types
+    CURSOR_TO_MSG_POS(6);
+    fputs("Ship types:", stdout);
+
+    CURSOR_TO_MSG_POS(7);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(8);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(DESTROYER_FG_COLOR, DESTROYER_BG_COLOR);
+    fputs(DESTROYER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Destroyer", stdout);
+    
+    CURSOR_TO_MSG_POS(9);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(10);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(SUBMARINE_FG_COLOR, SUBMARINE_BG_COLOR);
+    fputs(SUBMARINE_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Submarine", stdout);
+
+    CURSOR_TO_MSG_POS(11);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(12);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CRUISER_FG_COLOR, CRUISER_BG_COLOR);
+    fputs(CRUISER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Cruiser", stdout);
+
+    CURSOR_TO_MSG_POS(13);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(14);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(BATTLESHIP_FG_COLOR, BATTLESHIP_BG_COLOR);
+    fputs(BATTLESHIP_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Battleship", stdout);
+
+    CURSOR_TO_MSG_POS(15);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(16);
+
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CARRIER_FG_COLOR, CARRIER_BG_COLOR);
+    fputs(CARRIER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Carrier", stdout);
+
+    CURSOR_TO_MSG_POS(17);
+    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
+
+}
+
 
 /* Private methods */
 
@@ -334,18 +484,4 @@ static void print_letters(void) {
         CURSOR_RIGHT(1);
         putchar(i + 'A');
     }
-}
-
-PrintInfo set_hit_print_info(PrintInfo spot_print_info) {
-    spot_print_info.bg_color[1] = HIT_BG_COLOR;
-    spot_print_info.fg_color[1] = HIT_FG_COLOR;
-    spot_print_info.symbol[1] = HIT_SYMBOL;
-    return spot_print_info;
-}
-
-PrintInfo set_miss_print_info(PrintInfo spot_print_info) {
-    spot_print_info.bg_color[1] = MISS_BG_COLOR;
-    spot_print_info.fg_color[1] = MISS_FG_COLOR;
-    spot_print_info.symbol[1] = MISS_SYMBOL;
-    return spot_print_info;
 }
