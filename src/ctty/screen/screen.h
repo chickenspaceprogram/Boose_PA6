@@ -1,6 +1,10 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../keypress/keypress.h"
@@ -40,5 +44,21 @@
  * Outputs: none, typecasts to void to make it clear that this is solely for pausing
  */
 #define PAUSE() (void) GETCH()
+
+/**
+ * Function name: resize_screen
+ * Date created: 7 Nov 2024
+ * Date last modified: 7 Nov 2024
+ * Description: Resizes terminal screen to be `lines` by `cols`.
+ * Inputs: 
+ * `lines` : The number of lines you want the terminal to have.
+ * `cols` : The number of columns you want the terminal to have.
+ * Outputs: none
+ */
+void resize_screen(int lines, int cols);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
