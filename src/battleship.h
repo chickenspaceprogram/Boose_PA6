@@ -3,6 +3,24 @@
 
 #include "ui/board.h"
 #include "ui/place-ships.h"
+#include "rand.h"
+#include <stdio.h>
+#include "ctty/ansi/colors.h"
+#include "ui/space-print-info.h"
+#include "ui/select-shot-spot.h"
+
+/**
+ * Function name: 
+ * Date created: 12 Nov 2024
+ * Date last modified: 12 Nov 2024
+ * Description: 
+ * Inputs: 
+ * Outputs: 
+ */
+void play_battleship(void);
+
+Position play_turn(Board *shots_board, Board *ships_board, ShipInfo *ships, char *player_name, Position last_shot, int turn_num);
+
 
 /**
  * Function name: check_ship_sunk
@@ -26,5 +44,9 @@ int check_ship_sunk(Board *shots_board, ShipInfo ship);
  */
 
 int get_newly_sunk_ship(Board *shots_board, ShipInfo *ships);
+
+int check_player_placing_ships(void);
+
+Board init_ships_board(int *rand_ships);
 
 #endif

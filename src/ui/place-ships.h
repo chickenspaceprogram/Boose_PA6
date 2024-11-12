@@ -29,18 +29,21 @@ typedef struct {
     Position position;
     Ship ship;
     Orientation orientation;
-    int ship_is_hit;
+//    int ship_is_hit;
 } ShipInfo;
 
 /**
- * Function name: 
+ * Function name: place_ships
  * Date created: 5 Nov 2024
- * Date last modified: 5 Nov 2024
- * Description: 
+ * Date last modified: 12 Nov 2024
+ * Description: Places ships on the board, either manually or automatically.
  * Inputs: 
- * Outputs: 
+ * `board` : The board to place the ships on.
+ * `ships` : An array containing the ships to place.
+ * `rand_ships` : 1 if ships are to be randomly placed, 0 if not.
+ * Outputs: none
  */
-void place_ships(Board *board, ShipInfo *ships);
+void place_ships(Board *board, ShipInfo *ships, int rand_ships);
 
 /**
  * Function name: place_ships

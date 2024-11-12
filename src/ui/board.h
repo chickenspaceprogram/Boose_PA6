@@ -10,7 +10,6 @@ This is some very cursed graphics programming, sorry if it's darn near unintelli
 #include "../ctty/ansi/text-modes.h"
 
 #include "../ctty/screen/screen.h"
-
 #include "space-print-info.h"
 
 #define BOARD_SIZE 10
@@ -24,21 +23,23 @@ This is some very cursed graphics programming, sorry if it's darn near unintelli
 // a magic macro to make some functions here less ugly
 #define CURSOR_TO_MSG_POS(row_offset)   CURSOR_TO_POSITION(board->start_position.row + MSG_START_ROW + row_offset, board->start_position.col + MSG_START_COL);
 
-typedef enum {
-    Ships,
-    Shots,
-} BoardType;
-
 typedef struct {
     Color bg_color[3];
     Color fg_color[3];
     char symbol[3];
 } PrintInfo;
 
+typedef enum {
+    ShotMsg,
+    ManualPlacement,
+    AutoPlacement,
+    ShipView,
+} BoardMsg;
 
 
 typedef struct board Board;
-// OOP in C is cursed but it felt natural here
+
+// doing OOP in regular C was a bad idea but is very funny
 struct board {
     PrintInfo board[BOARD_SIZE][BOARD_SIZE];
     Position start_position;
@@ -77,18 +78,40 @@ struct board {
      */
     void (*reprint_symbol)(const Board *, const int, const int);
 
+    /**
+     * Function name: print_message
+     * Date created: 31 Oct 2024
+     * Date last modified: 31 Oct 2024
+     * Description: Prints a message to accompany the board.
+     * Inputs: 
+     * `Board *` : The `Board` struct you want to print
+     * Outputs: none
+     */
     void (*print_message)(Board *);
+
+    /**
+     * Function name: set_print_message
+     * Date created: 12 Nov 2024
+     * Date last modified: 12 Nov 2024
+     * Description: Sets print_message to the appropriate message.
+     * Inputs: 
+     * `Board *` : The `Board` struct you want to print.
+     * `BoardMsg` : An enum representing the message you want printed alongside the board.
+     * Outputs: none
+     */
+    void (*set_print_message)(Board *, BoardMsg);
 };
 
 /**
  * Function name: newBoard
  * Date created: 31 Oct 2024
- * Date last modified: 1 Nov 2024
+ * Date last modified: 12 Nov 2024
  * Description: Creates a new, empty board.
- * Inputs: none
+ * Inputs: 
+ * `msg` : An enum containing the message that should be printed with the board.
  * Outputs: The created board.
  */
-Board newBoard(BoardType type);
+Board newBoard(BoardMsg msg);
 
 /**
  * Function name: 
@@ -110,7 +133,6 @@ PrintInfo set_hit_print_info(PrintInfo spot_print_info);
  */
 PrintInfo set_miss_print_info(PrintInfo spot_print_info);
 
-
 /**
  * Function name: print_shot_message
  * Date created: 2 Nov 2024
@@ -126,7 +148,8 @@ void print_shot_message(Board *board);
  * Date created: 2 Nov 2024
  * Date last modified: 2 Nov 2024
  * Description: Prints the message that accompanies the board where the user picks locations for their ships.
- * Inputs: none
+ * Inputs: 
+ * `board` : The board accompanying the message.
  * Outputs: none
  */
 void print_ship_placement_message(Board *board);
@@ -136,9 +159,32 @@ void print_ship_placement_message(Board *board);
  * Date created: 7 Nov 2024
  * Date last modified: 7 Nov 2024
  * Description: Prints the message that accompanies the board where the user picks locations for their ships.
- * Inputs: none
+ * Inputs:
+ * `board` : The board accompanying the message.
  * Outputs: none
  */
 void print_rand_ship_message(Board *board);
+
+/**
+ * Function name: print_board_disp_message
+ * Date created: 7 Nov 2024
+ * Date last modified: 7 Nov 2024
+ * Description: Prints the message that accompanies the board where the user picks locations for their ships.
+ * Inputs: 
+ * `board` : The board accompanying the message.
+ * Outputs: none
+ */
+void print_board_disp_message(Board *board);
+
+/**
+ * Function name: print_ship_status_message
+ * Date created: 12 Nov 2024
+ * Date last modified: 12 Nov 2024
+ * Description: Prints the message that accompanies the board when the user is viewing the status of their ships.
+ * Inputs: 
+ * `board` : The board accompanying the message.
+ * Outputs: none
+ */
+void print_ship_status_message(Board *board);
 
 #endif

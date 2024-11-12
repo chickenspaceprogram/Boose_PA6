@@ -9,11 +9,6 @@
 #include "../ctty/ansi/cursor.h"
 #include "../ctty/screen/screen.h"
 
-typedef struct {
-    int row;
-    int col;
-} ShotCoords;
-
 typedef enum {
     Key_1 = 0,
     Key_2,
@@ -50,7 +45,7 @@ typedef enum {
  * Inputs: 
  * Outputs: 
  */
-ShotCoords select_spot(Board *board);
+Position select_spot(Board *board);
 
 /**
  * Function name: normalize_spot
@@ -60,7 +55,7 @@ ShotCoords select_spot(Board *board);
  * Inputs: 
  * Outputs: 
  */
-ShotCoords normalize_spot(ShotCoords spot, int max_row, int max_col);
+Position normalize_spot(Position spot, int max_row, int max_col);
 
 /**
  * Function name: set_cursor_print_info

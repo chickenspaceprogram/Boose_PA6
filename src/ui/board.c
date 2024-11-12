@@ -43,6 +43,18 @@ static void print_symbols(const Board *board);
  */
 static void reprint_symbol(const Board *board, int row, int col);
 
+/**
+ * Function name: set_print_message
+ * Date created: 12 Nov 2024
+ * Date last modified: 12 Nov 2024
+ * Description: Sets print_message to the appropriate message.
+ * Inputs: 
+ * `Board *` : The `Board` struct you want to print.
+ * `BoardMsg` : An enum representing the message you want printed alongside the board.
+ * Outputs: none
+ */
+static void set_print_message(Board *board, BoardMsg msg);
+
 /* Private Method Declarations */
 
 /**
@@ -108,7 +120,7 @@ static void print_letters(void);
 
 /* Public methods */
 
-Board newBoard(BoardType type) {
+Board newBoard(BoardMsg msg) {
     Board board;
     PrintInfo blank_info = BLANK_PRINT_INFO;
 
@@ -122,14 +134,7 @@ Board newBoard(BoardType type) {
     board.print_board = &print_board;
     board.print_symbols = &print_symbols;
     board.reprint_symbol = &reprint_symbol;
-    switch (type) {
-        case Ships:
-            board.print_message = &print_ship_placement_message;
-            break;
-        case Shots:
-            board.print_message = &print_shot_message;
-            break;
-    }
+    set_print_message(&board, msg);
     return board;
 }
 
@@ -183,223 +188,21 @@ PrintInfo set_miss_print_info(PrintInfo spot_print_info) {
     return spot_print_info;
 }
 
-void print_shot_message(Board *board) {
-    // this is pretty cursed and messy. however, it does work!
-    PrintInfo blank_info = BLANK_PRINT_INFO;
-    PrintInfo hit_print_info = set_hit_print_info(blank_info);
-    PrintInfo miss_print_info = set_miss_print_info(blank_info);
-
-
-
-    // printing text
-    CURSOR_TO_MSG_POS(0);
-    fputs("Select a spot you haven't fired", stdout);
-    CURSOR_TO_MSG_POS(1);
-    fputs("at before using either the", stdout);
-    CURSOR_TO_MSG_POS(2);
-    fputs("arrow keys or keys 1-0 and a-j,", stdout);
-    CURSOR_TO_MSG_POS(3);
-    fputs("then press [Enter].", stdout);
-    CURSOR_TO_MSG_POS(5);
-    fputs("Key:", stdout);
-
-    // printing "Hit" box
-    CURSOR_TO_MSG_POS(7);
-    fputs(MODE_DRAW"lqqqk", stdout);
-    CURSOR_TO_MSG_POS(8);
-    fputs("x"MODE_DRAW_RESET, stdout);
-    putchar(' ');
-    set_color(hit_print_info.fg_color[1], hit_print_info.bg_color[1]);
-    putchar(HIT_SYMBOL);
-    set_color(Default, Default);
-    putchar(' ');
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Hit", stdout);
-    CURSOR_TO_MSG_POS(9);
-    fputs(MODE_DRAW"mqqqj", stdout);
-
-    // printing "Miss" box
-    CURSOR_TO_MSG_POS(11);
-    fputs(MODE_DRAW"lqqqk", stdout);
-    CURSOR_TO_MSG_POS(12);
-    fputs("x"MODE_DRAW_RESET, stdout);
-    putchar(' ');
-    set_color(miss_print_info.fg_color[1], miss_print_info.bg_color[1]);
-    putchar('m');
-    set_color(Default, Default);
-    putchar(' ');
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Miss", stdout);
-    CURSOR_TO_MSG_POS(13);
-    fputs(MODE_DRAW"mqqqj", stdout);
-
-    CURSOR_TO_MSG_POS(15);
-    fputs(MODE_DRAW"lqqqk", stdout);
-    CURSOR_TO_MSG_POS(16);
-    fputs("x"MODE_DRAW_RESET"   "MODE_DRAW"x"MODE_DRAW_RESET" : No shot made", stdout);
-    CURSOR_TO_MSG_POS(17);
-    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
-
-}
-
-void print_ship_placement_message(Board *board) {
-    static const PrintInfo ships_print_info[] = {
-        DESTROYER_PRINT_INFO,
-        SUBMARINE_PRINT_INFO,
-        CRUISER_PRINT_INFO,
-        BATTLESHIP_PRINT_INFO,
-        CARRIER_PRINT_INFO,
-    };
-    CURSOR_TO_MSG_POS(0);
-
-    // printing msg txt  
-    fputs("Use the arrow keys to move each", stdout);
-    CURSOR_TO_MSG_POS(1);
-    fputs("ship to the desired position.", stdout);
-    CURSOR_TO_MSG_POS(2);
-    fputs("Press [Space] to change the", stdout);
-    CURSOR_TO_MSG_POS(3);
-    fputs("orientation of the ship, and", stdout);
-    CURSOR_TO_MSG_POS(4);
-    fputs("press [Enter] to place the", stdout);
-    CURSOR_TO_MSG_POS(5);
-    fputs("ship at the selected location.", stdout);
-
-    // printing ship types
-    CURSOR_TO_MSG_POS(7);
-    fputs("Ship types:", stdout);
-
-    CURSOR_TO_MSG_POS(9);
-    fputs(MODE_DRAW"lqqqk", stdout);
-    CURSOR_TO_MSG_POS(10);
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(DESTROYER_FG_COLOR, DESTROYER_BG_COLOR);
-    fputs(DESTROYER_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Destroyer", stdout);
-    
-    CURSOR_TO_MSG_POS(11);
-    fputs(MODE_DRAW"tqqqu", stdout);
-    CURSOR_TO_MSG_POS(12);
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(SUBMARINE_FG_COLOR, SUBMARINE_BG_COLOR);
-    fputs(SUBMARINE_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Submarine", stdout);
-
-    CURSOR_TO_MSG_POS(13);
-    fputs(MODE_DRAW"tqqqu", stdout);
-    CURSOR_TO_MSG_POS(14);
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(CRUISER_FG_COLOR, CRUISER_BG_COLOR);
-    fputs(CRUISER_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Cruiser", stdout);
-
-    CURSOR_TO_MSG_POS(15);
-    fputs(MODE_DRAW"tqqqu", stdout);
-    CURSOR_TO_MSG_POS(16);
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(BATTLESHIP_FG_COLOR, BATTLESHIP_BG_COLOR);
-    fputs(BATTLESHIP_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Battleship", stdout);
-
-    CURSOR_TO_MSG_POS(17);
-    fputs(MODE_DRAW"tqqqu", stdout);
-    CURSOR_TO_MSG_POS(18);
-
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(CARRIER_FG_COLOR, CARRIER_BG_COLOR);
-    fputs(CARRIER_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Carrier", stdout);
-
-    CURSOR_TO_MSG_POS(19);
-    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
-
-}
-
-void print_rand_ship_message(Board *board) {
-    static const PrintInfo ships_print_info[] = {
-        DESTROYER_PRINT_INFO,
-        SUBMARINE_PRINT_INFO,
-        CRUISER_PRINT_INFO,
-        BATTLESHIP_PRINT_INFO,
-        CARRIER_PRINT_INFO,
-    };
-    CURSOR_TO_MSG_POS(0);
-
-    // printing msg txt  
-    fputs("Your ships have been randomly", stdout);
-    CURSOR_TO_MSG_POS(1);
-    fputs("placed in the locations", stdout);
-    CURSOR_TO_MSG_POS(2);
-    fputs("displayed here. Press any key", stdout);
-    CURSOR_TO_MSG_POS(3);
-    fputs("to continue . . .", stdout);
-
-    // printing ship types
-    CURSOR_TO_MSG_POS(6);
-    fputs("Ship types:", stdout);
-
-    CURSOR_TO_MSG_POS(7);
-    fputs(MODE_DRAW"lqqqk", stdout);
-    CURSOR_TO_MSG_POS(8);
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(DESTROYER_FG_COLOR, DESTROYER_BG_COLOR);
-    fputs(DESTROYER_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Destroyer", stdout);
-    
-    CURSOR_TO_MSG_POS(9);
-    fputs(MODE_DRAW"tqqqu", stdout);
-    CURSOR_TO_MSG_POS(10);
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(SUBMARINE_FG_COLOR, SUBMARINE_BG_COLOR);
-    fputs(SUBMARINE_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Submarine", stdout);
-
-    CURSOR_TO_MSG_POS(11);
-    fputs(MODE_DRAW"tqqqu", stdout);
-    CURSOR_TO_MSG_POS(12);
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(CRUISER_FG_COLOR, CRUISER_BG_COLOR);
-    fputs(CRUISER_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Cruiser", stdout);
-
-    CURSOR_TO_MSG_POS(13);
-    fputs(MODE_DRAW"tqqqu", stdout);
-    CURSOR_TO_MSG_POS(14);
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(BATTLESHIP_FG_COLOR, BATTLESHIP_BG_COLOR);
-    fputs(BATTLESHIP_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Battleship", stdout);
-
-    CURSOR_TO_MSG_POS(15);
-    fputs(MODE_DRAW"tqqqu", stdout);
-    CURSOR_TO_MSG_POS(16);
-
-
-    fputs("x"MODE_DRAW_RESET, stdout);
-    set_color(CARRIER_FG_COLOR, CARRIER_BG_COLOR);
-    fputs(CARRIER_SYMBOL, stdout);
-    set_color(NO_COLOR, NO_COLOR);
-    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Carrier", stdout);
-
-    CURSOR_TO_MSG_POS(17);
-    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
-
+void set_print_message(Board *board, BoardMsg msg) {
+    switch (msg) {
+        case ShotMsg:
+            board->print_message = &print_shot_message;
+            break;
+        case ManualPlacement:
+            board->print_message = &print_ship_placement_message;
+            break;
+        case AutoPlacement:
+            board->print_message = &print_rand_ship_message;
+            break;
+        case ShipView:
+            board->print_message = &print_ship_status_message;
+            break;
+    }
 }
 
 
@@ -484,4 +287,305 @@ static void print_letters(void) {
         CURSOR_RIGHT(1);
         putchar(i + 'A');
     }
+}
+
+
+
+/* Message printing functions */
+
+/* the code beyond this point is terrible, but i couldn't think of a better way to do it */
+
+void print_shot_message(Board *board) {
+    // printing text
+    CURSOR_TO_MSG_POS(0);
+    fputs("Select a spot you haven't fired", stdout);
+    CURSOR_TO_MSG_POS(1);
+    fputs("at before using either the", stdout);
+    CURSOR_TO_MSG_POS(2);
+    fputs("arrow keys or keys 1-0 and a-j,", stdout);
+    CURSOR_TO_MSG_POS(3);
+    fputs("then press [Enter].", stdout);
+    CURSOR_TO_MSG_POS(5);
+    fputs("Key:", stdout);
+
+    // printing "Hit" box
+    CURSOR_TO_MSG_POS(7);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(8);
+    fputs("x"MODE_DRAW_RESET, stdout);
+    putchar(' ');
+    set_color(HIT_FG_COLOR, HIT_BG_COLOR);
+    putchar(HIT_SYMBOL);
+    set_color(Default, Default);
+    putchar(' ');
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Hit", stdout);
+    CURSOR_TO_MSG_POS(9);
+    fputs(MODE_DRAW"mqqqj", stdout);
+
+    // printing "Miss" box
+    CURSOR_TO_MSG_POS(11);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(12);
+    fputs("x"MODE_DRAW_RESET, stdout);
+    putchar(' ');
+    set_color(MISS_FG_COLOR, MISS_BG_COLOR);
+    putchar('m');
+    set_color(Default, Default);
+    putchar(' ');
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Miss", stdout);
+    CURSOR_TO_MSG_POS(13);
+    fputs(MODE_DRAW"mqqqj", stdout);
+
+    CURSOR_TO_MSG_POS(15);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(16);
+    fputs("x"MODE_DRAW_RESET"   "MODE_DRAW"x"MODE_DRAW_RESET" : No shot made", stdout);
+    CURSOR_TO_MSG_POS(17);
+    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
+
+}
+
+void print_ship_placement_message(Board *board) {
+    CURSOR_TO_MSG_POS(0);
+
+    // printing msg txt  
+    fputs("Use the arrow keys to move each", stdout);
+    CURSOR_TO_MSG_POS(1);
+    fputs("ship to the desired position.", stdout);
+    CURSOR_TO_MSG_POS(2);
+    fputs("Press [Space] to change the", stdout);
+    CURSOR_TO_MSG_POS(3);
+    fputs("orientation of the ship, and", stdout);
+    CURSOR_TO_MSG_POS(4);
+    fputs("press [Enter] to place the", stdout);
+    CURSOR_TO_MSG_POS(5);
+    fputs("ship at the selected location.", stdout);
+
+    // printing ship types
+    CURSOR_TO_MSG_POS(7);
+    fputs("Ship types:", stdout);
+
+    CURSOR_TO_MSG_POS(9);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(10);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(DESTROYER_FG_COLOR, DESTROYER_BG_COLOR);
+    fputs(DESTROYER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Destroyer", stdout);
+    
+    CURSOR_TO_MSG_POS(11);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(12);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(SUBMARINE_FG_COLOR, SUBMARINE_BG_COLOR);
+    fputs(SUBMARINE_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Submarine", stdout);
+
+    CURSOR_TO_MSG_POS(13);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(14);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CRUISER_FG_COLOR, CRUISER_BG_COLOR);
+    fputs(CRUISER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Cruiser", stdout);
+
+    CURSOR_TO_MSG_POS(15);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(16);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(BATTLESHIP_FG_COLOR, BATTLESHIP_BG_COLOR);
+    fputs(BATTLESHIP_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Battleship", stdout);
+
+    CURSOR_TO_MSG_POS(17);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(18);
+
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CARRIER_FG_COLOR, CARRIER_BG_COLOR);
+    fputs(CARRIER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Carrier", stdout);
+
+    CURSOR_TO_MSG_POS(19);
+    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
+
+}
+
+void print_rand_ship_message(Board *board) {
+    CURSOR_TO_MSG_POS(0);
+
+    // printing msg txt  
+    fputs("Your ships have been randomly", stdout);
+    CURSOR_TO_MSG_POS(1);
+    fputs("placed in the locations", stdout);
+    CURSOR_TO_MSG_POS(2);
+    fputs("displayed here. Press any key", stdout);
+    CURSOR_TO_MSG_POS(3);
+    fputs("to continue . . .", stdout);
+
+    // printing ship types
+    CURSOR_TO_MSG_POS(6);
+    fputs("Ship types:", stdout);
+
+    CURSOR_TO_MSG_POS(7);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(8);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(DESTROYER_FG_COLOR, DESTROYER_BG_COLOR);
+    fputs(DESTROYER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Destroyer", stdout);
+    
+    CURSOR_TO_MSG_POS(9);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(10);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(SUBMARINE_FG_COLOR, SUBMARINE_BG_COLOR);
+    fputs(SUBMARINE_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Submarine", stdout);
+
+    CURSOR_TO_MSG_POS(11);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(12);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CRUISER_FG_COLOR, CRUISER_BG_COLOR);
+    fputs(CRUISER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Cruiser", stdout);
+
+    CURSOR_TO_MSG_POS(13);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(14);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(BATTLESHIP_FG_COLOR, BATTLESHIP_BG_COLOR);
+    fputs(BATTLESHIP_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Battleship", stdout);
+
+    CURSOR_TO_MSG_POS(15);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(16);
+
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CARRIER_FG_COLOR, CARRIER_BG_COLOR);
+    fputs(CARRIER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Carrier", stdout);
+
+    CURSOR_TO_MSG_POS(17);
+    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
+
+}
+
+void print_ship_status_message(Board *board) {
+
+    CURSOR_TO_MSG_POS(0);
+
+    // printing msg txt  
+    fputs("Here is the current status of", stdout);
+    CURSOR_TO_MSG_POS(1);
+    fputs("your ships. Press any key to", stdout);
+    CURSOR_TO_MSG_POS(2);
+    fputs("continue . . .", stdout);
+
+    // printing ship types
+    CURSOR_TO_MSG_POS(4);
+    fputs("Key:", stdout);
+
+    CURSOR_TO_MSG_POS(5);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(6);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(DESTROYER_FG_COLOR, DESTROYER_BG_COLOR);
+    fputs(DESTROYER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Destroyer", stdout);
+    
+    CURSOR_TO_MSG_POS(7);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(8);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(SUBMARINE_FG_COLOR, SUBMARINE_BG_COLOR);
+    fputs(SUBMARINE_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Submarine", stdout);
+
+    CURSOR_TO_MSG_POS(9);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(10);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CRUISER_FG_COLOR, CRUISER_BG_COLOR);
+    fputs(CRUISER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Cruiser", stdout);
+
+    CURSOR_TO_MSG_POS(11);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(12);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(BATTLESHIP_FG_COLOR, BATTLESHIP_BG_COLOR);
+    fputs(BATTLESHIP_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Battleship", stdout);
+
+    CURSOR_TO_MSG_POS(13);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(14);
+
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    set_color(CARRIER_FG_COLOR, CARRIER_BG_COLOR);
+    fputs(CARRIER_SYMBOL, stdout);
+    set_color(NO_COLOR, NO_COLOR);
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Carrier", stdout);
+
+    CURSOR_TO_MSG_POS(15);
+    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
+
+    CURSOR_TO_MSG_POS(17);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(18);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    putchar(' ');
+    set_color(HIT_FG_COLOR, HIT_BG_COLOR);
+    putchar(HIT_SYMBOL);
+    set_color(NO_COLOR, NO_COLOR);
+    putchar(' ');
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Hit", stdout);
+    
+    CURSOR_TO_MSG_POS(19);
+    fputs(MODE_DRAW"tqqqu", stdout);
+    CURSOR_TO_MSG_POS(20);
+
+    fputs("x"MODE_DRAW_RESET, stdout);
+    putchar(' ');
+    set_color(MISS_FG_COLOR, MISS_BG_COLOR);
+    putchar(MISS_SYMBOL);
+    set_color(NO_COLOR, NO_COLOR);
+    putchar(' ');
+    fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Miss", stdout);
+
+    CURSOR_TO_MSG_POS(21);
+    fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
 }

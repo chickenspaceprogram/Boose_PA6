@@ -8,11 +8,11 @@
  * Inputs: 
  * Outputs: 
  */
-static ShotCoords move_cursor(ShotCoords cursor_pos, Keypress keypress);
+static Position move_cursor(Position cursor_pos, Keypress keypress);
 
-ShotCoords select_spot(Board *board) {
-    ShotCoords current_coords = {.row = 4, .col = 4};
-    ShotCoords next_coords;
+Position select_spot(Board *board) {
+    Position current_coords = {.row = 4, .col = 4};
+    Position next_coords;
     PrintInfo spot_print_info = board->board[current_coords.row][current_coords.col];
 
     sequence valid_keypresses[] = {
@@ -77,7 +77,7 @@ ShotCoords select_spot(Board *board) {
     return current_coords;
 }
 
-ShotCoords normalize_spot(ShotCoords spot, int max_row, int max_col) {
+Position normalize_spot(Position spot, int max_row, int max_col) {
     if (spot.row < 0) {
         spot.row = 0;
     }
@@ -99,7 +99,7 @@ void set_cursor_print_info(PrintInfo *info) {
     info->symbol[1] = '+';
 }
 
-static ShotCoords move_cursor(ShotCoords cursor_pos, Keypress keypress) {
+static Position move_cursor(Position cursor_pos, Keypress keypress) {
     switch (keypress) {
         case Key_1: case Key_2: case Key_3: case Key_4: case Key_5: case Key_6: case Key_7: case Key_8: case Key_9: case Key_0:
             cursor_pos.col = (int) keypress;

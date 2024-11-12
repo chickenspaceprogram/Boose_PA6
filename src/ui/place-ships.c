@@ -19,28 +19,21 @@ typedef enum {
  */
 static void printship(ShipInfo ship);
 
-void place_ships(Board *board, ShipInfo *ships) {
-    Option options[] = {
-        {.msg = (unsigned char *)"1. Place ships manually", .sequence = (unsigned char *)"1"},
-        {.msg = (unsigned char *)"2. Place ships randomly", .sequence = (unsigned char *)"2"},
-    };
-    unsigned char *title = (unsigned char *)"Select Ship Placement";
-    size_t selection = menu(options, title, 2);
-    CLEAR_SCREEN();
-    if (selection == 0) {
+void place_ships(Board *board, ShipInfo *ships, int rand_ships){
+    if (!rand_ships) {
         player_place_ships(board, ships);
     }
-    else if (selection == 1) {
+    else {
         rand_place_ships(board, ships);
         PAUSE();
     }
+    CLEAR_SCREEN();
 }
 
 void player_place_ships(Board *board, ShipInfo *ships) {
     ShipInfo current_ship_info = {
         .position = {.row = 4, .col = 4},
         .orientation = Horizontal,
-        .ship_is_hit = 0,
     };
     board->print_board(board);
     for (int i = 0; i < NUM_SHIPS; ++i) {
@@ -64,7 +57,6 @@ void rand_place_ships(Board *board, ShipInfo *ships) {
 
     board->print_board(board);
     for (int i = 0; i < NUM_SHIPS; ++i) {
-        ships[i].ship_is_hit = 0;
         ships[i].ship = (Ship) i;
         do {
             ships[i].orientation = (Orientation) randint(0, 1);
