@@ -1,100 +1,117 @@
 #include "battleship.h"
 
-static void print_turn_welcome(Board *board, ShipInfo *ships, char *player_name, Position last_shot, int turn_num);
+static void print_turn_welcome(PlayerInfo *player, Position last_shot, int turn_num);
 
-static void print_ship_status(Board *board, ShipInfo ship);
+static void print_ship_status(Board *board, ShipInfo ship_info);
 
 void play_battleship(void) {
     CLEAR_SCREEN();
 
-    Board player1_shots_board = newBoard(ShotMsg);
-    int player1_rand_ships;
-    ShipInfo player1_ships[5];
-    Board player1_ships_board;
+    PlayerInfo players[2] = {
+        {.shots = newBoard(ShotMsg), .name = {0}},
+        {.shots = newBoard(ShotMsg), .name = {0}},
+    };
 
-    Board player2_shots_board = newBoard(ShotMsg);
-    int player2_rand_ships;
-    Board player2_ships_board;
-    ShipInfo player2_ships[5];
+    Position player1_pos = {0, 0}, player2_pos = {0, 0};
 
     int player_1_first = randint(0, 1);
 
-    // a cursed way of doing this, but oh well
     if (player_1_first) {
-        // placing player 1's ships
-        fputs("It is player 1's turn.\n\n", stdout);
-        player1_ships_board = init_ships_board(&player1_rand_ships);
-        place_ships(&player1_ships_board, player1_ships, player1_rand_ships);
+        players[0] = init_player_info(1);
+        players[1] = init_player_info(2);
     }
-
-    fputs("It is player 2's turn.\n\n", stdout);
-    player2_ships_board = init_ships_board(&player2_rand_ships);
-    place_ships(&player2_ships_board, player2_ships, player2_rand_ships);
-
-    if (!player_1_first) {
-        // placing player 1's ships
-        fputs("It is player 1's turn.\n\n", stdout);
-        player1_ships_board = init_ships_board(&player1_rand_ships);
-        place_ships(&player1_ships_board, player1_ships, player1_rand_ships);
+    else {
+        players[0] = init_player_info(2);
+        players[1] = init_player_info(1);
     }
-    Position test = {-1, -1};
+    Position shot_pos[2] = {
+        {0, 0},
+        {0, 0},
+    };
 
-    play_turn(&player1_shots_board, &player1_ships_board, player1_ships, "Player 1", test, 69);
-
+    // an entirely sensible for loop :)
+    for (int num_turns = 1; !check_all_ship_sunk(&(players[0].shots), players[0].ship_info) && !check_all_ship_sunk(&(players[1].shots), players[1].ship_info); ++num_turns) {
+        shot_pos[0] = play_turn(&(players[0]), shot_pos[0], num_turns);
+        CLEAR_SCREEN();
+        shot_pos[1] = play_turn(&(players[1]), shot_pos[1], num_turns);
+        CLEAR_SCREEN();
+    }
 }
 
-Position play_turn(Board *shots_board, Board *ships_board, ShipInfo *ships, char *player_name, Position last_shot, int turn_num) {
-    print_turn_welcome(shots_board, ships, player_name, last_shot, turn_num); // this many function args is painful
+PlayerInfo init_player_info(int player_num) {
+    PlayerInfo info = {
+        .shots = newBoard(ShotMsg),
+        .name = {0},
+    };
+    printf("Hi Player %d! Please enter your name (maximum %d characters): ", player_num, MAX_NAME_LEN);
+    fgets(info.name, MAX_NAME_LEN, stdin);
+    putchar('\n');
+
+    // clearing newline at end of string
+    int len = strlen(info.name);
+    printf("%d", len);
+    if (info.name[len - 1] == '\n') { // fgets also stops reading on encountering EOF and doesn't put EOF into the string
+        info.name[len - 1] = '\0';
+    }
+
+    info.ships_rand_place = is_rand_placing_ships();
+    info.ships = init_ships_board(info.ships_rand_place);
+    place_ships(&(info.ships), info.ship_info, info.ships_rand_place);
+}
+
+Position play_turn(PlayerInfo *player, Position last_shot, int turn_num) {
+    print_turn_welcome(player, last_shot, turn_num);
 
     Option turn_menu[2] = {
         {.msg = (unsigned char *)"1. Shoot at opponent ships", .sequence = (unsigned char *)"1"},
         {.msg = (unsigned char *)"2. Look at your ships", .sequence = (unsigned char *)"2"},
     };
     int selection = 0;
+    fputs(CURSOR_OFF, stdout);
     do {
         selection = menu(turn_menu, "What do you want to do?", 2);
         if (selection == 1) {
             CLEAR_SCREEN();
-            ships_board->print_board(ships_board);
+            player->ships.print_board(&(player->ships));
             PAUSE();
         }
         CLEAR_SCREEN();
     } while (selection != 0);
-    return select_spot(shots_board);
+    fputs(CURSOR_ON, stdout);
+    return select_spot(&(player->shots));
 }
 
-int check_ship_sunk(Board *shots_board, ShipInfo ship) {
+bool check_ship_sunk(Board *shots_board, ShipInfo ship) {
     int ship_len = get_ship_len(ship.ship);
     switch (ship.orientation) {
         case Horizontal:
             for (int i = 0; i < ship_len; ++i) {
                 if (shots_board->board[ship.position.row][ship.position.col + i].symbol[1] != HIT_SYMBOL) {
-                    return 0;
+                    return false;
                 }
             }
             break;
         case Vertical:
             for (int i = 0; i < ship_len; ++i) {
                 if (shots_board->board[ship.position.row + i][ship.position.col].symbol[1] != HIT_SYMBOL) {
-                    return 0;
+                    return false;
                 }
             }
             break;
     }
-    return 1;
+    return true;
 }
 
-
-int get_newly_sunk_ship(Board *shots_board, ShipInfo *ships) {
+bool check_all_ship_sunk(Board *shots_board, ShipInfo *ships) {
     for (int i = 0; i < NUM_SHIPS; ++i) {
         if (check_ship_sunk(shots_board, ships[i])) {
-            return i;
+            return true;
         }
     }
-    return -1;
+    return false;
 }
 
-int check_player_placing_ships(void) {
+bool is_rand_placing_ships(void) {
     Option options[] = {
         {.msg = (unsigned char *)"1. Place ships manually", .sequence = (unsigned char *)"1"},
         {.msg = (unsigned char *)"2. Place ships randomly", .sequence = (unsigned char *)"2"},
@@ -105,13 +122,13 @@ int check_player_placing_ships(void) {
     return selection;
 }
 
-Board init_ships_board(int *rand_ships) {
+Board init_ships_board(bool rand_ships) {
     Board board;
-    if (*rand_ships = check_player_placing_ships()) { // the assignment inside the if statement is intentional
-        board = newBoard(ManualPlacement);
+    if (rand_ships) { // the assignment inside the if statement is intentional
+        board = newBoard(AutoPlacement);
     }
     else {
-        board = newBoard(AutoPlacement);
+        board = newBoard(ManualPlacement);
     }
     return board;
 }
@@ -121,18 +138,18 @@ Board init_ships_board(int *rand_ships) {
 
 /* private functions */
 
-void print_turn_welcome(Board *board, ShipInfo *ships, char *player_name, Position last_shot, int turn_num) {
-    printf("Hi, %s. It is currently turn %d.\n", player_name);
+void print_turn_welcome(PlayerInfo *player, Position last_shot, int turn_num) {
+    printf("Hi, %s. It is currently turn %d.\n", player->name, turn_num);
 
     // only want to print this if a shot has been made
-    if (last_shot.row != -1 && turn_num != 1) {
+    if (turn_num != 1) {
         printf("Your opponent shot at space %c%d and ", last_shot.row + 'A', last_shot.col + 1);
-        if (board->board[last_shot.row][last_shot.col].symbol[1] == 'm') {
+        if (player->ships.board[last_shot.row][last_shot.col].symbol[1] == 'm') {
             fputs("missed.\n\n", stdout);
             return;
         }
 
-        switch (board->board[last_shot.row][last_shot.col].bg_color[0]) {
+        switch (player->ships.board[last_shot.row][last_shot.col].bg_color[0]) {
             // switching based on the color of the space is a very cursed way to do this, but it works.
             // we can't switch based on the characters because those might be overwritten by hits
             case DESTROYER_BG_COLOR:
@@ -160,12 +177,12 @@ void print_turn_welcome(Board *board, ShipInfo *ships, char *player_name, Positi
 
     fputs("Status of ships:\n\n", stdout);
     for (int i = 0; i < NUM_SHIPS; ++i) {
-        print_ship_status(board, ships[i]);
+        print_ship_status(&(player->ships), player->ship_info[i]);
     }
 }
 
-void print_ship_status(Board *board, ShipInfo ship) {
-    switch (ship.ship) {
+void print_ship_status(Board *board, ShipInfo ship_info) {
+    switch (ship_info.ship) {
         case Destroyer:
             fputs("Destroyer:  ", stdout);
             break;
@@ -183,7 +200,7 @@ void print_ship_status(Board *board, ShipInfo ship) {
             break;
     }
 
-    if (check_ship_sunk(board, ship)) {
+    if (check_ship_sunk(board, ship_info)) {
         set_color(BrightWhite, BrightRed);
         fputs(MODE_BOLD"SUNK\n"MODE_BOLD_FAINT_RESET, stdout);
         set_color(Default, Default);

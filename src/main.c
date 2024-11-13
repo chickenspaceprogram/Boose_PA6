@@ -27,25 +27,29 @@ int main(void) {
         {.msg = (unsigned char *)"3. Exit", .sequence = (unsigned char *)"3"},
     };
     int selection = 0;
-    fputs(CURSOR_OFF, stdout);
     do {
+        fputs(CURSOR_OFF, stdout);
         selection = menu(main_menu_opts, "Battleship Main Menu", 3);
+        fputs(CURSOR_ON, stdout);
         CLEAR_SCREEN();
+
         switch (selection) {
             case 0:
                 play_battleship();
                 break;
             case 1:
+                fputs(CURSOR_OFF, stdout);
                 FILE *log = fopen("battleship.log", "r");
                 if (log == NULL) {
                     fputs("Sorry, it doesn't look like a log file has been created yet.\nTry playing a game of battleship first!\n\nPress any key to continue . . .", stdout);
-                    PAUSE();
                 }
                 else {
                     fclose(log);
                     print_file("battleship.log", false);
                 }
+                PAUSE();
                 CLEAR_SCREEN();
+                fputs(CURSOR_ON, stdout);
                 break;
             default:
                 break;
@@ -54,7 +58,7 @@ int main(void) {
     while ((selection != Exit));
 
     CLEAR_SCREEN();
-    fputs("\nThanks for playing Battleship!\n\n"CURSOR_ON, stdout);
+    fputs("\nThanks for playing Battleship!\n\n", stdout);
 }
 
 /*void current(void) {
