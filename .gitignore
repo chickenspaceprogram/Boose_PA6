@@ -8,3 +8,4 @@ board.txt
 build/**
 !CMakeLists.txt
 debug
+battleship.log

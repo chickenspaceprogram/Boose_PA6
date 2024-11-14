@@ -9,16 +9,12 @@
 #include "ctty/ansi/colors.h"
 #include "ui/space-print-info.h"
 #include "ui/select-shot-spot.h"
-
-#define MAX_NAME_LEN 80
+#include "log.h"
 
 typedef struct {
-    Board shots;
-    Board ships;
-    ShipInfo ship_info[NUM_SHIPS];
-    bool ships_rand_place;
-    char name[MAX_NAME_LEN + 1]; // must add 1 to have space for '\0' at the end
-} PlayerInfo;
+    int hits;
+    int misses;
+} ShotRecords;
 
 void init_player_info(PlayerInfo *info, int player_num);
 
@@ -33,7 +29,7 @@ void init_player_info(PlayerInfo *info, int player_num);
 void play_battleship(void);
 
 // wrote on 13th
-Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Position last_shot, int turn_num);
+Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Position last_shot, ShotRecords *records, int turn_num);
 
 
 /**
@@ -72,18 +68,6 @@ bool check_all_ship_sunk(ShipInfo *ships);
 void update_ships_status(Board *ships_board, ShipInfo *ships);
 
 /**
- * Function name: is_new_ship_sunk
- * Date created: 13 Nov 2024
- * Date last modified: 13 Nov 2024
- * Description: Checks if a new ship has been sunk.
- *              If it has, returns the index of the ship.
- *              If not, -1 is returned.
- * Inputs: 
- * Outputs: 
- */
-int is_new_ship_sunk(ShipInfo *old_ships, ShipInfo *new_ships);
-
-/**
  * Function name: check_for_hit
  * Date created: 13 Nov 2024
  * Date last modified: 13 Nov 2024 
@@ -91,7 +75,7 @@ int is_new_ship_sunk(ShipInfo *old_ships, ShipInfo *new_ships);
  * Inputs: 
  * Outputs: The index of the ship that was hit if there was a hit, otherwise -1.
  */
-int check_for_hit(Position shot, ShipInfo *other_player_ships);
+int check_for_hit(Board *other_player_ships, Position shot);
 
 /**
  * Function name: is_rand_placing_ships

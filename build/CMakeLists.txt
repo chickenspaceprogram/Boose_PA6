@@ -10,5 +10,7 @@ add_executable(Boose_PA6
         ../src/rand.h
         ../src/battleship.c
         ../src/battleship.h
+        ../src/log.c
+        ../src/log.h
 )
 target_link_libraries(Boose_PA6 ctty ui)

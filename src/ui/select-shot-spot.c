@@ -69,7 +69,7 @@ Position select_spot(Board *board) {
         	set_cursor_print_info(&(board->board[current_coords.row][current_coords.col]));
         	board->reprint_symbol(board, current_coords.row, current_coords.col);
         }
-    } while (!(keypress == Enter && spot_print_info.symbol[1] == ' ')); 
+    } while (!(keypress == Enter && spot_print_info.shot == ShotNone)); 
 
     // resetting formatting at current cursor position, no need to redisplay though
     board->board[current_coords.row][current_coords.col] = spot_print_info;

@@ -23,10 +23,27 @@ This is some very cursed graphics programming, sorry if it's darn near unintelli
 // a magic macro to make some functions here less ugly
 #define CURSOR_TO_MSG_POS(row_offset)   CURSOR_TO_POSITION(board->start_position.row + MSG_START_ROW + row_offset, board->start_position.col + MSG_START_COL);
 
+typedef enum {
+    SpaceHasDestroyer = 0,
+    SpaceHasSubmarine,
+    SpaceHasCruiser,
+    SpaceHasBattleship,
+    SpaceHasCarrier,
+    SpaceHasNone,
+} ShipsInSpace;
+
+typedef enum {
+    ShotNone = 0,
+    ShotHit,
+    ShotMiss,
+} ShotsInSpace;
+
 typedef struct {
     Color bg_color[3];
     Color fg_color[3];
     char symbol[3];
+    ShipsInSpace ship;
+    ShotsInSpace shot;
 } PrintInfo;
 
 typedef enum {

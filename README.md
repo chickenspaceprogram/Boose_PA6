@@ -24,9 +24,17 @@ On Windows, use Visual Studio to run the project.
 On Unix-based systems, the executable is located in `build/Boose_PA6`.
 You can then run it either by selecting it in your file manager, or by running it on the command line with `build/Boose_PA6` (if you're in the `Boose_PA6` directory) or `./Boose_PA6` (if you're in the `build` directory).
 
+If you decide to exit this program forcefully using Ctrl+C, your terminal settings may be altered.
+To fix this on *nix systems, enter the command `reset` into the terminal.
+Alternately, quit and reopen your terminal emulator.
 
 ## Potential runtime error codes:
 
-### 0x0000 - invalid board color
+### 0x00 - invalid board color
 
 This error results from the board having an incorrect color. It should not occur under normal circumstances. This error typically indicates that the hit or miss registered in the player's last turn has not been recognized.
+
+### 0x01 - log file could not be opened
+
+This error occurs when the log file could not be opened for writing. 
+Maybe another process has the file open?
