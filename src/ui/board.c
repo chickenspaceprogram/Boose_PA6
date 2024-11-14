@@ -135,17 +135,14 @@ Board newBoard(BoardMsg msg) {
     board.print_symbols = &print_symbols;
     board.reprint_symbol = &reprint_symbol;
     board.set_print_message = &set_print_message;
-    printf("%p", board.set_print_message);
     board.set_print_message(&board, msg);
     return board;
 }
 
 void print_board(Board *board) {
-    fputs(CURSOR_OFF, stdout);
     print_board_outline(board);
     board->print_symbols(board);
     board->print_message(board);
-    fputs(CURSOR_ON, stdout);
 }
 
 void print_board_outline(Board *board) {

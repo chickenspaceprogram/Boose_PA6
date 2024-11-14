@@ -35,8 +35,14 @@ void play_battleship(void) {
     for (int num_turns = 1; !check_all_ship_sunk(&(players[0].shots), players[0].ship_info) && !check_all_ship_sunk(&(players[1].shots), players[1].ship_info); ++num_turns) {
         shot_pos[0] = play_turn(&(players[0]), shot_pos[0], num_turns);
         CLEAR_SCREEN();
+        // check hit/miss/sunk
+        // disp hit/miss/sunk
         shot_pos[1] = play_turn(&(players[1]), shot_pos[1], num_turns);
         CLEAR_SCREEN();
+        // check hit/miss/sunk
+        // disp hit/miss/sunk
+
+        // log stuff
     }
 }
 
@@ -74,8 +80,10 @@ Position play_turn(PlayerInfo *player, Position last_shot, int turn_num) {
         selection = menu(turn_menu, "What do you want to do?", 2);
         if (selection == 1) {
             CLEAR_SCREEN();
+            fputs(CURSOR_OFF, stdout);
             player->ships.print_board(&(player->ships));
             PAUSE();
+            fputs(CURSOR_ON, stdout);
         }
         CLEAR_SCREEN();
     } while (selection != 0);
