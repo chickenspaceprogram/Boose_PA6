@@ -1,10 +1,11 @@
 # Battleship
 
 To build this project, you must have CMake installed.
+You can download it [here](https://cmake.org/download/), or use your preferred package manager.
 
 ### Configuring CMake
 
-Then, `cd` into the `build` directory and enter `cmake .` to configure CMake. Once you've configured CMake, you can then build the project.
+To configure the CMake project, `cd` into the `build` directory and enter `cmake .` to configure CMake. Once you've configured CMake, you can then build the project.
 
 ### Building on *nix
 
@@ -13,3 +14,19 @@ To build the project on a Unix-based OS, enter `cmake --build .` when in the `bu
 ### Building on Windows
 
 To build the project on Windows, you must use Microsoft Visual Studio. Open the `Boose_PA6.sln` file located in the `build` directory. Once Visual Studio has opened, right-click `Boose_PA6` in the Solution Explorer and select `Set as Startup Project`. Then, build the project.
+
+### Running Battleship
+
+To run this project, simply run the executable generated.
+
+On Windows, use Visual Studio to run the project.
+
+On Unix-based systems, the executable is located in `build/Boose_PA6`.
+You can then run it either by selecting it in your file manager, or by running it on the command line with `build/Boose_PA6` (if you're in the `Boose_PA6` directory) or `./Boose_PA6` (if you're in the `build` directory).
+
+
+## Potential runtime error codes:
+
+### 0x0000 - invalid board color
+
+This error results from the board having an incorrect color. It should not occur under normal circumstances. This error typically indicates that the hit or miss registered in the player's last turn has not been recognized.
