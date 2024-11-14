@@ -9,6 +9,7 @@
 #include "../ctty/menu/menu.h"
 #include "board.h"
 #include "space-print-info.h"
+#include <stdbool.h>
 
 typedef enum {
     Destroyer = 0,
@@ -18,7 +19,7 @@ typedef enum {
     Carrier,
 } Ship;
 
-#define NUM_SHIPS               5
+#define NUM_SHIPS   5
 
 typedef enum {
     Horizontal = 0,
@@ -29,7 +30,7 @@ typedef struct {
     Position position;
     Ship ship;
     Orientation orientation;
-//    int ship_is_hit;
+    bool is_sunk;
 } ShipInfo;
 
 /**

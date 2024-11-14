@@ -299,20 +299,24 @@ static void print_letters(void) {
 void print_shot_message(Board *board) {
     // printing text
     CURSOR_TO_MSG_POS(0);
-    fputs("Select a spot you haven't fired", stdout);
+    fputs("Select a spot you haven't yet", stdout);
     CURSOR_TO_MSG_POS(1);
-    fputs("at before using either the", stdout);
+    fputs("fired at with the arrow keys or", stdout);
     CURSOR_TO_MSG_POS(2);
-    fputs("arrow keys or keys 1-0 and a-j,", stdout);
+    fputs("keys 1-0 and a-j. Then, press", stdout);
     CURSOR_TO_MSG_POS(3);
-    fputs("then press [Enter].", stdout);
+    fputs("[Enter] to see whether you hit", stdout);
+    CURSOR_TO_MSG_POS(4);
+    fputs("or missed. When you're done,", stdout);
     CURSOR_TO_MSG_POS(5);
+    fputs("press any key to continue.", stdout);
+    CURSOR_TO_MSG_POS(7);
     fputs("Key:", stdout);
 
     // printing "Hit" box
-    CURSOR_TO_MSG_POS(7);
+    CURSOR_TO_MSG_POS(9);
     fputs(MODE_DRAW"lqqqk", stdout);
-    CURSOR_TO_MSG_POS(8);
+    CURSOR_TO_MSG_POS(10);
     fputs("x"MODE_DRAW_RESET, stdout);
     putchar(' ');
     set_color(HIT_FG_COLOR, HIT_BG_COLOR);
@@ -320,13 +324,13 @@ void print_shot_message(Board *board) {
     set_color(Default, Default);
     putchar(' ');
     fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Hit", stdout);
-    CURSOR_TO_MSG_POS(9);
+    CURSOR_TO_MSG_POS(11);
     fputs(MODE_DRAW"mqqqj", stdout);
 
     // printing "Miss" box
-    CURSOR_TO_MSG_POS(11);
+    CURSOR_TO_MSG_POS(13);
     fputs(MODE_DRAW"lqqqk", stdout);
-    CURSOR_TO_MSG_POS(12);
+    CURSOR_TO_MSG_POS(14);
     fputs("x"MODE_DRAW_RESET, stdout);
     putchar(' ');
     set_color(MISS_FG_COLOR, MISS_BG_COLOR);
@@ -334,14 +338,14 @@ void print_shot_message(Board *board) {
     set_color(Default, Default);
     putchar(' ');
     fputs(MODE_DRAW"x"MODE_DRAW_RESET" : Miss", stdout);
-    CURSOR_TO_MSG_POS(13);
+    CURSOR_TO_MSG_POS(15);
     fputs(MODE_DRAW"mqqqj", stdout);
 
-    CURSOR_TO_MSG_POS(15);
-    fputs(MODE_DRAW"lqqqk", stdout);
-    CURSOR_TO_MSG_POS(16);
-    fputs("x"MODE_DRAW_RESET"   "MODE_DRAW"x"MODE_DRAW_RESET" : No shot made", stdout);
     CURSOR_TO_MSG_POS(17);
+    fputs(MODE_DRAW"lqqqk", stdout);
+    CURSOR_TO_MSG_POS(18);
+    fputs("x"MODE_DRAW_RESET"   "MODE_DRAW"x"MODE_DRAW_RESET" : No shot made", stdout);
+    CURSOR_TO_MSG_POS(19);
     fputs(MODE_DRAW"mqqqj"MODE_DRAW_RESET, stdout);
 
 }

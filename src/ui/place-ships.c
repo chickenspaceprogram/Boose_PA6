@@ -20,6 +20,7 @@ typedef enum {
 static void printship(ShipInfo ship);
 
 void place_ships(Board *board, ShipInfo *ships, int rand_ships){
+    fputs(CURSOR_OFF, stdout);
     if (!rand_ships) {
         player_place_ships(board, ships);
     }
@@ -27,6 +28,7 @@ void place_ships(Board *board, ShipInfo *ships, int rand_ships){
         rand_place_ships(board, ships);
         PAUSE();
     }
+    fputs(CURSOR_ON, stdout);
     CLEAR_SCREEN();
 }
 
@@ -34,6 +36,7 @@ void player_place_ships(Board *board, ShipInfo *ships) {
     ShipInfo current_ship_info = {
         .position = {.row = 4, .col = 4},
         .orientation = Horizontal,
+        .is_sunk = false,
     };
     board->print_board(board);
     for (int i = 0; i < NUM_SHIPS; ++i) {
@@ -58,6 +61,7 @@ void rand_place_ships(Board *board, ShipInfo *ships) {
     board->print_board(board);
     for (int i = 0; i < NUM_SHIPS; ++i) {
         ships[i].ship = (Ship) i;
+        ships[i].is_sunk = false;
         do {
             ships[i].orientation = (Orientation) randint(0, 1);
             set_max_row_col(ships[i], &max_row, &max_col);
@@ -67,7 +71,6 @@ void rand_place_ships(Board *board, ShipInfo *ships) {
         for (int j = 0; j < NUM_SHIPS; ++j) {
             current_ship_print_info[j] = ships_print_info[i];
         }
-
         print_ship(board, ships[i], current_ship_print_info);
     }
 }

@@ -4,6 +4,9 @@ static void print_turn_welcome(PlayerInfo *player, Position last_shot, int turn_
 
 static void print_ship_status(Board *board, ShipInfo ship_info);
 
+// prints the string assoc'd with each ship
+static void print_ship_string(Color bg_color);
+
 void play_battleship(void) {
     CLEAR_SCREEN();
 
@@ -31,16 +34,9 @@ void play_battleship(void) {
     players[0].ships.set_print_message(&(players[0].ships), ShipView);
     players[1].ships.set_print_message(&(players[1].ships), ShipView);
 
-    // an entirely sensible for loop :)
-    for (int num_turns = 1; !check_all_ship_sunk(&(players[0].shots), players[0].ship_info) && !check_all_ship_sunk(&(players[1].shots), players[1].ship_info); ++num_turns) {
-        shot_pos[0] = play_turn(&(players[0]), shot_pos[0], num_turns);
-        CLEAR_SCREEN();
-        // check hit/miss/sunk
-        // disp hit/miss/sunk
-        shot_pos[1] = play_turn(&(players[1]), shot_pos[1], num_turns);
-        CLEAR_SCREEN();
-        // check hit/miss/sunk
-        // disp hit/miss/sunk
+    for (int num_turns = 1; !check_all_ship_sunk(players[0].ship_info) && !check_all_ship_sunk(players[1].ship_info); ++num_turns) {
+        shot_pos[0] = play_turn(&(players[0]), &(players[1]), shot_pos[0], num_turns);
+        shot_pos[1] = play_turn(&(players[1]), &(players[0]), shot_pos[1], num_turns);
 
         // log stuff
     }
@@ -68,8 +64,11 @@ void init_player_info(PlayerInfo *info, int player_num) {
     
 }
 
-Position play_turn(PlayerInfo *player, Position last_shot, int turn_num) {
-    print_turn_welcome(player, last_shot, turn_num);
+Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Position last_shot, int turn_num) {
+    Position current_shot;
+    int hit_ship;
+
+    print_turn_welcome(current_player, last_shot, turn_num);
 
     Option turn_menu[2] = {
         {.msg = (unsigned char *)"1. Shoot at opponent ships", .sequence = (unsigned char *)"1"},
@@ -81,28 +80,72 @@ Position play_turn(PlayerInfo *player, Position last_shot, int turn_num) {
         if (selection == 1) {
             CLEAR_SCREEN();
             fputs(CURSOR_OFF, stdout);
-            player->ships.print_board(&(player->ships));
+            current_player->ships.print_board(&(current_player->ships));
             PAUSE();
             fputs(CURSOR_ON, stdout);
         }
         CLEAR_SCREEN();
     } while (selection != 0);
-    return select_spot(&(player->shots));
+
+    current_shot = select_spot(&(current_player->shots));
+    fputs(CURSOR_OFF, stdout);
+    hit_ship = check_for_hit(current_shot, targeted_player->ship_info);
+    if (hit_ship == -1) {
+        current_player->shots.board[current_shot.row][current_shot.col].symbol[1] = MISS_SYMBOL;
+        current_player->shots.board[current_shot.row][current_shot.col].bg_color[1] = MISS_BG_COLOR;
+        current_player->shots.board[current_shot.row][current_shot.col].fg_color[1] = MISS_FG_COLOR;
+        current_player->shots.reprint_symbol(&(current_player->shots), current_shot.row, current_shot.col);
+
+        targeted_player->ships.board[current_shot.row][current_shot.col].symbol[1] = MISS_SYMBOL;
+        targeted_player->ships.board[current_shot.row][current_shot.col].bg_color[1] = MISS_BG_COLOR;
+        targeted_player->ships.board[current_shot.row][current_shot.col].fg_color[1] = MISS_FG_COLOR;
+        PAUSE();
+        CLEAR_SCREEN();
+        printf("\nYour shot at position %c%d missed.\n\nPress any key to start %s's turn . . .", current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
+        PAUSE();
+        CLEAR_SCREEN();
+        fputs(CURSOR_ON, stdout);
+        return current_shot;
+    }
+
+    current_player->shots.board[current_shot.row][current_shot.col].symbol[1] = HIT_SYMBOL;
+    current_player->shots.board[current_shot.row][current_shot.col].bg_color[1] = HIT_BG_COLOR;
+    current_player->shots.board[current_shot.row][current_shot.col].fg_color[1] = HIT_FG_COLOR;
+    current_player->shots.reprint_symbol(&(current_player->shots), current_shot.row, current_shot.col);
+    
+    targeted_player->ships.board[current_shot.row][current_shot.col].symbol[1] = HIT_SYMBOL;
+    targeted_player->ships.board[current_shot.row][current_shot.col].bg_color[1] = HIT_BG_COLOR;
+    targeted_player->ships.board[current_shot.row][current_shot.col].fg_color[1] = HIT_FG_COLOR;
+
+    PAUSE();
+    CLEAR_SCREEN();
+    if (check_ship_sunk(&(targeted_player->ships), targeted_player->ship_info[hit_ship])) {
+        printf("\nYour shot at position %c%d hit and sunk %s's ",  current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
+    }
+    else {
+        printf("\nYour shot at position %c%d hit %s's ",  current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
+    }
+    print_ship_string(targeted_player->ships.board[current_shot.row][current_shot.col].bg_color[1]);
+    fputs(".\n\nPress any key to continue...", stdout);
+    PAUSE();
+    CLEAR_SCREEN();
+    fputs(CURSOR_ON, stdout);
+    return current_shot;
 }
 
-bool check_ship_sunk(Board *shots_board, ShipInfo ship) {
+bool check_ship_sunk(Board *ships_board, ShipInfo ship) {
     int ship_len = get_ship_len(ship.ship);
     switch (ship.orientation) {
         case Horizontal:
             for (int i = 0; i < ship_len; ++i) {
-                if (shots_board->board[ship.position.row][ship.position.col + i].symbol[1] != HIT_SYMBOL) {
+                if (ships_board->board[ship.position.row][ship.position.col + i].symbol[1] != HIT_SYMBOL) {
                     return false;
                 }
             }
             break;
         case Vertical:
             for (int i = 0; i < ship_len; ++i) {
-                if (shots_board->board[ship.position.row + i][ship.position.col].symbol[1] != HIT_SYMBOL) {
+                if (ships_board->board[ship.position.row + i][ship.position.col].symbol[1] != HIT_SYMBOL) {
                     return false;
                 }
             }
@@ -111,13 +154,28 @@ bool check_ship_sunk(Board *shots_board, ShipInfo ship) {
     return true;
 }
 
-bool check_all_ship_sunk(Board *shots_board, ShipInfo *ships) {
+bool check_all_ship_sunk(ShipInfo *ships) {
     for (int i = 0; i < NUM_SHIPS; ++i) {
-        if (check_ship_sunk(shots_board, ships[i])) {
+        if (ships[i].is_sunk) {
             return true;
         }
     }
     return false;
+}
+
+void update_ships_status(Board *ships_board, ShipInfo *ships) {
+    for (int i = 0; i < NUM_SHIPS; ++i) {
+        ships[i].is_sunk = check_ship_sunk(ships_board, ships[i]);
+    }
+}
+
+int is_new_ship_sunk(ShipInfo *old_ships, ShipInfo *new_ships) {
+    for (int i = 0; i < NUM_SHIPS; ++i) {
+        if (old_ships[i].is_sunk != new_ships[i].is_sunk) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 bool is_rand_placing_ships(void) {
@@ -143,8 +201,26 @@ Board init_ships_board(bool rand_ships) {
 }
 
 
-
-
+int check_for_hit(Position shot, ShipInfo *other_player_ships) {
+    for (int i = 0; i < NUM_SHIPS; ++i) {
+        // pretty cursed if statement
+        // checks if the shot is within bounds of the ship
+        if (
+            other_player_ships[i].orientation == Horizontal && 
+            (shot.col - other_player_ships[i].position.col) >= 0 && 
+            ((shot.col - other_player_ships[i].position.col) < get_ship_len(other_player_ships[i].ship)) && 
+            (shot.row == other_player_ships[i].position.row)
+            ||
+            other_player_ships[i].orientation == Vertical && 
+            (shot.row - other_player_ships[i].position.row) >= 0 && 
+            ((shot.row - other_player_ships[i].position.row) < get_ship_len(other_player_ships[i].ship)) && 
+            (shot.col == other_player_ships[i].position.col)
+        ) {
+            return i;
+        }
+    }
+    return -1;
+}
 /* private functions */
 
 void print_turn_welcome(PlayerInfo *player, Position last_shot, int turn_num) {
@@ -157,30 +233,9 @@ void print_turn_welcome(PlayerInfo *player, Position last_shot, int turn_num) {
             fputs("missed.\n\n", stdout);
             return;
         }
-
-        switch (player->ships.board[last_shot.row][last_shot.col].bg_color[0]) {
-            // switching based on the color of the space is a very cursed way to do this, but it works.
-            // we can't switch based on the characters because those might be overwritten by hits
-            case DESTROYER_BG_COLOR:
-                fputs("hit your destroyer.\n\n", stdout);
-                break;
-            case SUBMARINE_BG_COLOR:
-                fputs("hit your submarine.\n\n", stdout);
-                break;
-            case CRUISER_BG_COLOR:
-                fputs("hit your cruiser.\n\n", stdout);
-                break;
-            case BATTLESHIP_BG_COLOR:
-                fputs("hit your battleship.\n\n", stdout);
-                break;
-            case CARRIER_BG_COLOR:
-                fputs("hit your carrier.\n\n", stdout);
-                break;
-            default: // should never happen!
-                fputs("\n\nAn error occurred! Exiting immediately. Please report this error to the developer of this application.\n", stdout);
-                exit(1);
-                break;
-        }
+        fputs("hit your ", stdout);
+        print_ship_string(player->ships.board[last_shot.row][last_shot.col].bg_color[1]);
+        fputs(".\n\n", stdout);
     }
 
 
@@ -189,6 +244,33 @@ void print_turn_welcome(PlayerInfo *player, Position last_shot, int turn_num) {
         print_ship_status(&(player->ships), player->ship_info[i]);
     }
 }
+
+void print_ship_string(Color bg_color) {
+    switch (bg_color) {
+        // switching based on the color of the space is a very cursed way to do this, but it works.
+        // we can't switch based on the characters because those might be overwritten by hits
+        case DESTROYER_BG_COLOR:
+            fputs("destroyer", stdout);
+            break;
+        case SUBMARINE_BG_COLOR:
+            fputs("submarine", stdout);
+            break;
+        case CRUISER_BG_COLOR:
+            fputs("cruiser", stdout);
+            break;
+        case BATTLESHIP_BG_COLOR:
+            fputs("battleship", stdout);
+            break;
+        case CARRIER_BG_COLOR:
+            fputs("carrier", stdout);
+            break;
+        default: // should never happen!
+            fputs("\n\nAn error occurred! Exiting immediately. Please report this error to the developer of this application.\nError code: `0x0000` - invalid board color\n", stdout);
+            exit(1);
+            break;
+    }
+}
+
 
 void print_ship_status(Board *board, ShipInfo ship_info) {
     switch (ship_info.ship) {
