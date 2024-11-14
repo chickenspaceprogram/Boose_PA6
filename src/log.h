@@ -8,6 +8,11 @@
 #define MAX_NAME_LEN 80
 
 typedef struct {
+    int hits;
+    int misses;
+} ShotRecords;
+
+typedef struct {
     Board shots;
     Board ships;
     ShipInfo ship_info[NUM_SHIPS];

@@ -12,5 +12,7 @@ add_executable(Boose_PA6
         ../src/battleship.h
         ../src/log.c
         ../src/log.h
+        ../src/board-spot-checking.c
+        ../src/board-spot-checking.h
 )
 target_link_libraries(Boose_PA6 ctty ui)
