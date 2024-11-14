@@ -45,6 +45,7 @@ Position select_spot(Board *board) {
     Keypress keypress = -1;
 
     CLEAR_SCREEN();
+    printf("ligma balls");
     board->print_board(board);
 
     printf(CURSOR_OFF);

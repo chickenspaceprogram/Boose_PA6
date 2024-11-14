@@ -20,7 +20,7 @@ typedef struct {
     char name[MAX_NAME_LEN + 1]; // must add 1 to have space for '\0' at the end
 } PlayerInfo;
 
-PlayerInfo init_player_info(int player_num);
+void init_player_info(PlayerInfo *info, int player_num);
 
 /**
  * Function name: 

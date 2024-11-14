@@ -17,17 +17,19 @@ void play_battleship(void) {
     int player_1_first = randint(0, 1);
 
     if (player_1_first) {
-        players[0] = init_player_info(1);
-        players[1] = init_player_info(2);
+        init_player_info(&(players[0]), 1);
+        init_player_info(&(players[1]), 2);
     }
     else {
-        players[0] = init_player_info(2);
-        players[1] = init_player_info(1);
+        init_player_info(&(players[1]), 2);
+        init_player_info(&(players[0]), 1);
     }
     Position shot_pos[2] = {
         {0, 0},
         {0, 0},
     };
+    players[0].ships.set_print_message(&(players[0].ships), ShipView);
+    players[1].ships.set_print_message(&(players[1].ships), ShipView);
 
     // an entirely sensible for loop :)
     for (int num_turns = 1; !check_all_ship_sunk(&(players[0].shots), players[0].ship_info) && !check_all_ship_sunk(&(players[1].shots), players[1].ship_info); ++num_turns) {
@@ -38,25 +40,26 @@ void play_battleship(void) {
     }
 }
 
-PlayerInfo init_player_info(int player_num) {
-    PlayerInfo info = {
-        .shots = newBoard(ShotMsg),
-        .name = {0},
-    };
+void init_player_info(PlayerInfo *info, int player_num) {
+    info->shots = newBoard(ShotMsg);
+    for (int i = 0; i < MAX_NAME_LEN + 1; ++i) {
+        info->name[i] = '\0';
+    }
+
     printf("Hi Player %d! Please enter your name (maximum %d characters): ", player_num, MAX_NAME_LEN);
-    fgets(info.name, MAX_NAME_LEN, stdin);
+    fgets(info->name, MAX_NAME_LEN, stdin);
     putchar('\n');
 
     // clearing newline at end of string
-    int len = strlen(info.name);
-    printf("%d", len);
-    if (info.name[len - 1] == '\n') { // fgets also stops reading on encountering EOF and doesn't put EOF into the string
-        info.name[len - 1] = '\0';
+    int len = strlen(info->name);
+    if (info->name[len - 1] == '\n') { // fgets also stops reading on encountering EOF and doesn't put EOF into the string
+        info->name[len - 1] = '\0';
     }
 
-    info.ships_rand_place = is_rand_placing_ships();
-    info.ships = init_ships_board(info.ships_rand_place);
-    place_ships(&(info.ships), info.ship_info, info.ships_rand_place);
+    info->ships_rand_place = is_rand_placing_ships();
+    info->ships = init_ships_board(info->ships_rand_place);
+    place_ships(&(info->ships), info->ship_info, info->ships_rand_place);
+    
 }
 
 Position play_turn(PlayerInfo *player, Position last_shot, int turn_num) {
@@ -67,7 +70,6 @@ Position play_turn(PlayerInfo *player, Position last_shot, int turn_num) {
         {.msg = (unsigned char *)"2. Look at your ships", .sequence = (unsigned char *)"2"},
     };
     int selection = 0;
-    fputs(CURSOR_OFF, stdout);
     do {
         selection = menu(turn_menu, "What do you want to do?", 2);
         if (selection == 1) {
@@ -77,7 +79,6 @@ Position play_turn(PlayerInfo *player, Position last_shot, int turn_num) {
         }
         CLEAR_SCREEN();
     } while (selection != 0);
-    fputs(CURSOR_ON, stdout);
     return select_spot(&(player->shots));
 }
 
@@ -124,7 +125,7 @@ bool is_rand_placing_ships(void) {
 
 Board init_ships_board(bool rand_ships) {
     Board board;
-    if (rand_ships) { // the assignment inside the if statement is intentional
+    if (rand_ships) {
         board = newBoard(AutoPlacement);
     }
     else {

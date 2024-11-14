@@ -7,3 +7,4 @@ Boose_PA6.zip
 board.txt
 build/**
 !CMakeLists.txt
+debug

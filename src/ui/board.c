@@ -17,7 +17,7 @@ typedef enum row_types {
  * Inputs: 
  * Outputs: 
  */
-static void print_board(Board *board);
+void print_board(Board *board);
 
 /**
  * Function name: Board->print_symbols
@@ -28,7 +28,7 @@ static void print_board(Board *board);
  * `Board *` : The `Board` struct you want to print
  * Outputs: none
  */
-static void print_symbols(const Board *board);
+void print_symbols(const Board *board);
 
 /**
  * Function name: Board->reprint_symbol
@@ -41,7 +41,7 @@ static void print_symbols(const Board *board);
  * `col` : The column of the symbol you want to reprint.
  * Outputs: none
  */
-static void reprint_symbol(const Board *board, int row, int col);
+void reprint_symbol(const Board *board, int row, int col);
 
 /**
  * Function name: set_print_message
@@ -53,7 +53,7 @@ static void reprint_symbol(const Board *board, int row, int col);
  * `BoardMsg` : An enum representing the message you want printed alongside the board.
  * Outputs: none
  */
-static void set_print_message(Board *board, BoardMsg msg);
+void set_print_message(Board *board, BoardMsg msg);
 
 /* Private Method Declarations */
 
@@ -134,17 +134,21 @@ Board newBoard(BoardMsg msg) {
     board.print_board = &print_board;
     board.print_symbols = &print_symbols;
     board.reprint_symbol = &reprint_symbol;
-    set_print_message(&board, msg);
+    board.set_print_message = &set_print_message;
+    printf("%p", board.set_print_message);
+    board.set_print_message(&board, msg);
     return board;
 }
 
-static void print_board(Board *board) {
+void print_board(Board *board) {
+    fputs(CURSOR_OFF, stdout);
     print_board_outline(board);
     board->print_symbols(board);
     board->print_message(board);
+    fputs(CURSOR_ON, stdout);
 }
 
-static void print_board_outline(Board *board) {
+void print_board_outline(Board *board) {
     board->start_position = cursor_get_position();
     CURSOR_DOWN_LINE_START(1);
     print_board_skeleton();
@@ -155,7 +159,7 @@ static void print_board_outline(Board *board) {
     CURSOR_TO_POSITION(board->start_position.row, board->start_position.col);
 }
 
-static void print_symbols(const Board *board) {
+void print_symbols(const Board *board) {
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
             reprint_symbol(board, i, j);
@@ -163,7 +167,7 @@ static void print_symbols(const Board *board) {
     }
 }
 
-static void reprint_symbol(const Board *board, const int row, const int col) {
+void reprint_symbol(const Board *board, const int row, const int col) {
     CURSOR_TO_POSITION(board->start_position.row + (row + 1) * (CELL_HEIGHT + 1) + 1, board->start_position.col + (col + 1) * (CELL_WIDTH + 1));
 
     for (int i = 0; i < CELL_WIDTH; ++i) {

@@ -28,9 +28,7 @@ int main(void) {
     };
     int selection = 0;
     do {
-        fputs(CURSOR_OFF, stdout);
         selection = menu(main_menu_opts, "Battleship Main Menu", 3);
-        fputs(CURSOR_ON, stdout);
         CLEAR_SCREEN();
 
         switch (selection) {
