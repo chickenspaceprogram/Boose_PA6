@@ -42,3 +42,30 @@ void update_ships_status(Board *ships_board, ShipInfo *ships) {
         ships[i].is_sunk = check_ship_sunk(ships_board, ships[i]);
     }
 }
+
+void set_spot_hit_miss(Board *current_player_shots, Board *targeted_player_ships, Position shot, bool is_hit) {
+    char symbol;
+    Color foreground, background;
+    ShotsInSpace hit_status;
+    if (is_hit) {
+        symbol = HIT_SYMBOL;
+        foreground = HIT_FG_COLOR;
+        background = HIT_BG_COLOR;
+        hit_status = ShotHit;
+    }
+    else {
+        symbol = MISS_SYMBOL;
+        foreground = MISS_FG_COLOR;
+        background = MISS_BG_COLOR;
+        hit_status = ShotMiss;
+    }
+    current_player_shots->board[shot.row][shot.col].symbol[1] = symbol;
+    current_player_shots->board[shot.row][shot.col].fg_color[1] = foreground;
+    current_player_shots->board[shot.row][shot.col].fg_color[1] = foreground;
+    current_player_shots->board[shot.row][shot.col].shot = hit_status;
+
+    targeted_player_ships->board[shot.row][shot.col].symbol[1] = symbol;
+    targeted_player_ships->board[shot.row][shot.col].fg_color[1] = foreground;
+    targeted_player_ships->board[shot.row][shot.col].fg_color[1] = foreground;
+    targeted_player_ships->board[shot.row][shot.col].shot = hit_status;
+}

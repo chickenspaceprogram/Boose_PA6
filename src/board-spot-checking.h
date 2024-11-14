@@ -3,6 +3,7 @@
 
 #include "ui/board.h"
 #include "ui/place-ships.h"
+#include <stdbool.h>
 
 /**
  * Function name: check_ship_sunk
@@ -30,7 +31,7 @@ bool check_all_ship_sunk(ShipInfo *ships);
 /**
  * Function name: check_for_hit
  * Date created: 13 Nov 2024
- * Date last modified: 13 Nov 2024 
+ * Date last modified: 14 Nov 2024 
  * Description: Checks whether a shot in a specific position hits a ship.
  * Inputs: 
  * Outputs: The index of the ship that was hit if there was a hit, otherwise -1.
@@ -40,7 +41,7 @@ int check_for_hit(Board *other_player_ships, Position shot);
 /**
  * Function name: update_ship_status
  * Date created: 13 Nov 2024
- * Date last modified: 13 Nov 2024
+ * Date last modified: 14 Nov 2024
  * Description: Updates the status of each ship, setting it to floating or sunk if need be.
  * Inputs: 
  * `ships_board` : The board where the ships are.
@@ -48,5 +49,7 @@ int check_for_hit(Board *other_player_ships, Position shot);
  * `ships` : ships.is_sunk set to the right value.
  */
 void update_ships_status(Board *ships_board, ShipInfo *ships);
+
+void set_spot_hit_miss(Board *current_player_shots, Board *targeted_player_ships, Position shot, bool is_hit);
 
 #endif

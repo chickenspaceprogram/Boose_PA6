@@ -108,16 +108,8 @@ Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Posi
     fputs(CURSOR_OFF, stdout);
     hit_ship = check_for_hit(&(targeted_player->ships), current_shot);
     if (hit_ship == -1) {
-        current_player->shots.board[current_shot.row][current_shot.col].symbol[1] = MISS_SYMBOL;
-        current_player->shots.board[current_shot.row][current_shot.col].bg_color[1] = MISS_BG_COLOR;
-        current_player->shots.board[current_shot.row][current_shot.col].fg_color[1] = MISS_FG_COLOR;
-        current_player->shots.board[current_shot.row][current_shot.col].shot = ShotMiss;
+        set_spot_hit_miss(&(current_player->shots), &(targeted_player->ships), current_shot, false);
         current_player->shots.reprint_symbol(&(current_player->shots), current_shot.row, current_shot.col);
-
-        targeted_player->ships.board[current_shot.row][current_shot.col].symbol[1] = MISS_SYMBOL;
-        targeted_player->ships.board[current_shot.row][current_shot.col].bg_color[1] = MISS_BG_COLOR;
-        targeted_player->ships.board[current_shot.row][current_shot.col].fg_color[1] = MISS_FG_COLOR;
-
         ++(records->misses);
         PAUSE();
         CLEAR_SCREEN();
@@ -129,16 +121,8 @@ Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Posi
         return current_shot;
     }
 
-    current_player->shots.board[current_shot.row][current_shot.col].symbol[1] = HIT_SYMBOL;
-    current_player->shots.board[current_shot.row][current_shot.col].bg_color[1] = HIT_BG_COLOR;
-    current_player->shots.board[current_shot.row][current_shot.col].fg_color[1] = HIT_FG_COLOR;
-    current_player->shots.board[current_shot.row][current_shot.col].shot = ShotHit;
+    set_spot_hit_miss(&(current_player->shots), &(targeted_player->ships), current_shot, true);
     current_player->shots.reprint_symbol(&(current_player->shots), current_shot.row, current_shot.col);
-    
-    targeted_player->ships.board[current_shot.row][current_shot.col].symbol[1] = HIT_SYMBOL;
-    targeted_player->ships.board[current_shot.row][current_shot.col].bg_color[1] = HIT_BG_COLOR;
-    targeted_player->ships.board[current_shot.row][current_shot.col].fg_color[1] = HIT_FG_COLOR;
-
     ++(records->hits);
 
     PAUSE();
