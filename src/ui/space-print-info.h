@@ -1,6 +1,8 @@
 #ifndef SPACE_PRINT_INFO_H
 #define SPACE_PRINT_INFO_H
 
+// sorry for so many #define macros, they were really convenient.
+
 #define DESTROYER_SYMBOL        " d "
 #define SUBMARINE_SYMBOL        " s "
 #define CRUISER_SYMBOL          " r "

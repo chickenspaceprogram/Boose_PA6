@@ -47,7 +47,7 @@ typedef struct {
 void place_ships(Board *board, ShipInfo *ships, int rand_ships);
 
 /**
- * Function name: place_ships
+ * Function name: player_place_ships
  * Date created: 3 Nov 2024
  * Date last modified: 3 Nov 2024
  * Description: Prompts the user to place their ships on the board.
@@ -61,12 +61,14 @@ void place_ships(Board *board, ShipInfo *ships, int rand_ships);
 void player_place_ships(Board *board, ShipInfo *ships);
 
 /**
- * Function name: 
+ * Function name: rand_place_ships
  * Date created: 3 Nov 2024
  * Date last modified: 3 Nov 2024
- * Description: 
+ * Description: Randomly places ships on the board.
  * Inputs: 
- * Outputs: 
+ * `board` : The board on which to place the ships.
+ * `ships` : The ships to place on the board.
+ * Outputs: none
  */
 void rand_place_ships(Board *board, ShipInfo *ships);
 

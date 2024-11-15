@@ -65,7 +65,7 @@ struct board {
      * Function name: Board->print_board
      * Date created: 31 Oct 2024
      * Date last modified: 1 Nov 2024
-     * Description: 
+     * Description: Prints the board.
      * Inputs: 
      * `Board *` : The `Board` struct you want to print
      * Outputs: none
@@ -131,22 +131,24 @@ struct board {
 Board newBoard(BoardMsg msg);
 
 /**
- * Function name: 
+ * Function name: set_hit_print_info
  * Date created: 6 Nov 2024
- * Date last modified: 6 Nov 2024
- * Description: 
+ * Date last modified: 14 Nov 2024
+ * Description: Sets the values of a PrintInfo struct such that it is a hit.
  * Inputs: 
- * Outputs: 
+ * `spot_print_info` : The PrintInfo struct whose values you want to set.
+ * Outputs: The PrintInfo struct with its values set such that it is a hit.
  */
 PrintInfo set_hit_print_info(PrintInfo spot_print_info);
 
 /**
- * Function name: 
+ * Function name: set_miss_print_info
  * Date created: 6 Nov 2024
- * Date last modified: 6 Nov 2024
- * Description: 
+ * Date last modified: 14 Nov 2024
+ * Description: Sets the values of a PrintInfo struct such that it is a miss.
  * Inputs: 
- * Outputs: 
+ * `spot_print_info` : The PrintInfo struct whose values you want to set.
+ * Outputs: The PrintInfo struct with its values set such that it is a miss.
  */
 PrintInfo set_miss_print_info(PrintInfo spot_print_info);
 
@@ -155,7 +157,8 @@ PrintInfo set_miss_print_info(PrintInfo spot_print_info);
  * Date created: 2 Nov 2024
  * Date last modified: 2 Nov 2024
  * Description: Prints the message that accompanies the board where the user picks a space to shoot at.
- * Inputs: none
+ * Inputs:
+ * `board` : The board whose shot message you want to print.
  * Outputs: none
  */
 void print_shot_message(Board *board);

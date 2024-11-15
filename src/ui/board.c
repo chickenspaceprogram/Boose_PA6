@@ -10,12 +10,13 @@ typedef enum row_types {
 /* Public Method Declarations */
 
 /**
- * Function name: 
+ * Function name: print_board
  * Date created: 1 Nov 2024
  * Date last modified: 1 Nov 2024
- * Description: 
+ * Description: Prints the board to the terminal.
  * Inputs: 
- * Outputs: 
+ * `board` : A pointer to the board struct to be printed.
+ * Outputs: none
  */
 void print_board(Board *board);
 
@@ -83,7 +84,8 @@ static void print_board_skeleton(void);
  * Date created: 31 Oct 2024
  * Date last modified: 31 Oct 2024
  * Description: Prints a solid, horizontal row. Assumes the terminal is already in draw mode.
- * Inputs: none
+ * Inputs: 
+ * `type` : The type of row to print
  * Outputs: none
  */
 static void print_solid_row(RowTypes type);
@@ -92,7 +94,7 @@ static void print_solid_row(RowTypes type);
  * Function name: print_dashed_row
  * Date created: 31 Oct 2024
  * Date last modified: 31 Oct 2024
- * Description: 
+ * Description: Prints a dashed, vertical row. Assumes the terminal is already in draw mode.
  * Inputs: none
  * Outputs: none
  */
@@ -102,7 +104,8 @@ static void print_dashed_row(void);
  * Function name: print_numbers
  * Date created: 1 Nov 2024
  * Date last modified: 1 Nov 2024
- * Description: expects to be on the row below the last row
+ * Description: Prints the numbers along the top of the board.
+ *              Expects to be on the row below the last row.
  * Inputs: none
  * Outputs: none
  */
@@ -112,7 +115,8 @@ static void print_numbers(void);
  * Function name: print_letters
  * Date created: 1 Nov 2024
  * Date last modified: 1 Nov 2024
- * Description: expects to be on the numbers row
+ * Description: Prints the letters along the side of the board.
+ *              Expects to be on the numbers row.
  * Inputs: none
  * Outputs: none
  */
@@ -179,6 +183,7 @@ PrintInfo set_hit_print_info(PrintInfo spot_print_info) {
     spot_print_info.bg_color[1] = HIT_BG_COLOR;
     spot_print_info.fg_color[1] = HIT_FG_COLOR;
     spot_print_info.symbol[1] = HIT_SYMBOL;
+    spot_print_info.shot = ShotHit;
     return spot_print_info;
 }
 
@@ -186,6 +191,7 @@ PrintInfo set_miss_print_info(PrintInfo spot_print_info) {
     spot_print_info.bg_color[1] = MISS_BG_COLOR;
     spot_print_info.fg_color[1] = MISS_FG_COLOR;
     spot_print_info.symbol[1] = MISS_SYMBOL;
+    spot_print_info.shot = ShotMiss;
     return spot_print_info;
 }
 

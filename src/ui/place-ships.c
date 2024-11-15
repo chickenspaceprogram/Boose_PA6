@@ -9,17 +9,7 @@ typedef enum {
     Enter,
 } Keys;
 
-/**
- * Function name: 
- * Date created: 3 Nov 2024
- * Date last modified: 3 Nov 2024
- * Description: 
- * Inputs: 
- * Outputs: 
- */
-static void printship(ShipInfo ship);
-
-void place_ships(Board *board, ShipInfo *ships, int rand_ships){
+void place_ships(Board *board, ShipInfo *ships, int rand_ships) {
     fputs(CURSOR_OFF, stdout);
     if (!rand_ships) {
         player_place_ships(board, ships);

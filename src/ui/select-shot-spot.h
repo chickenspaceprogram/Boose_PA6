@@ -41,9 +41,10 @@ typedef enum {
  * Function name: select_spot
  * Date created: 2 Nov 2024
  * Date last modified: 6 Nov 2024
- * Description: 
+ * Description: Allows the user to select a spot to shoot at on the board.
  * Inputs: 
- * Outputs: 
+ * `board` : The board on which to select a spot.
+ * Outputs: The spot the user selected.
  */
 Position select_spot(Board *board);
 
@@ -51,9 +52,12 @@ Position select_spot(Board *board);
  * Function name: normalize_spot
  * Date created: 2 Nov 2024
  * Date last modified: 2 Nov 2024
- * Description: 
+ * Description: Ensures that `spot` is within the proper bounds, and if it isn't, returns a value that is.
  * Inputs: 
- * Outputs: 
+ * `spot` : The position to be checked.
+ * `max_row` : The maximum allowable row.
+ * `max_col` : The maximum allowable column.
+ * Outputs: The new position of `spot`.
  */
 Position normalize_spot(Position spot, int max_row, int max_col);
 
@@ -61,9 +65,10 @@ Position normalize_spot(Position spot, int max_row, int max_col);
  * Function name: set_cursor_print_info
  * Date created: 6 Nov 2024
  * Date last modified: 6 Nov 2024
- * Description: 
- * Inputs: 
- * Outputs: 
+ * Description: Sets the PrintInfo struct `info` to the expected values for the cursor.
+ * Inputs: none
+ * Outputs:
+ * `info` : The PrintInfo struct to be set
  */
 void set_cursor_print_info(PrintInfo *info);
 

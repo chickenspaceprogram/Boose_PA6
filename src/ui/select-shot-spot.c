@@ -1,12 +1,14 @@
 #include "select-shot-spot.h"
 
 /**
- * Function name: 
+ * Function name: move_cursor
  * Date created: 2 Nov 2024
  * Date last modified: 2 Nov 2024
- * Description: 
+ * Description: Moves the cursor from its current position to the position it should have after the keypress described by `keypress`.
  * Inputs: 
- * Outputs: 
+ * `cursor_pos` : The current position of the cursor.
+ * `keypress` : The key that was pressed.
+ * Outputs: The new position of the cursor
  */
 static Position move_cursor(Position cursor_pos, Keypress keypress);
 
