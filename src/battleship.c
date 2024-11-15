@@ -31,8 +31,8 @@ void play_battleship(void) {
         init_player_info(&(players[1]), 1);
     }
     Position shot_pos[2] = {
-        {0, 0},
-        {0, 0},
+        {-1, -1},
+        {-1, -1},
     };
     players[0].ships.set_print_message(&(players[0].ships), ShipView);
     players[1].ships.set_print_message(&(players[1].ships), ShipView);
@@ -113,7 +113,7 @@ Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Posi
         ++(records->misses);
         PAUSE();
         CLEAR_SCREEN();
-        printf("\nYour shot at position %c%d missed.\n\nPress any key to start %s's turn . . .", current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
+        printf("\nYour shot at position "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" missed.\n\nPress any key to start %s's turn . . .", current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
         PAUSE();
         CLEAR_SCREEN();
         fputs(CURSOR_ON, stdout);
@@ -128,14 +128,14 @@ Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Posi
     PAUSE();
     CLEAR_SCREEN();
     if (check_ship_sunk(&(targeted_player->ships), targeted_player->ship_info[hit_ship])) {
-        printf("\nYour shot at position %c%d hit and sunk %s's ",  current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
+        printf("\nYour shot at position "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" hit and sunk %s's "MODE_INVERSE MODE_BOLD,  current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
         targeted_player->ship_info[hit_ship].is_sunk = true;
     }
     else {
-        printf("\nYour shot at position %c%d hit %s's ",  current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
+        printf("\nYour shot at position "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" hit %s's "MODE_INVERSE MODE_BOLD,  current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
     }
     print_ship_string(targeted_player->ships.board[current_shot.row][current_shot.col].ship, stdout);
-    fputs(".\n\nPress any key to continue...", stdout);
+    fputs(MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET".\n\nPress any key to continue...", stdout);
     PAUSE();
     CLEAR_SCREEN();
     fputs(CURSOR_ON, stdout);
@@ -175,15 +175,15 @@ void print_turn_welcome(PlayerInfo *player, Position last_shot, int turn_num) {
     printf("Hi, %s. It is currently turn %d.\n", player->name, turn_num);
 
     // only want to print this if a shot has been made
-    if (turn_num != 1) {
-        printf("Your opponent shot at space %c%d and ", last_shot.row + 'A', col);
+    if (turn_num != 1 || last_shot.row != -1 || last_shot.col != -1) {
+        printf("Your opponent shot at space "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" and "MODE_INVERSE MODE_BOLD, last_shot.row + 'A', col);
         if (player->ships.board[last_shot.row][last_shot.col].symbol[1] == 'm') {
-            fputs("missed.\n\n", stdout);
+            fputs("missed"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET".\n\n", stdout);
             return;
         }
-        fputs("hit your ", stdout);
+        fputs(MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET"hit your "MODE_INVERSE MODE_BOLD, stdout);
         print_ship_string(player->ships.board[last_shot.row][last_shot.col].ship, stdout);
-        fputs(".\n\n", stdout);
+        fputs(MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET".\n\n", stdout);
     }
 
 

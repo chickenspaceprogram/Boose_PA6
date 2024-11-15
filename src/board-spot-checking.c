@@ -61,11 +61,11 @@ void set_spot_hit_miss(Board *current_player_shots, Board *targeted_player_ships
     }
     current_player_shots->board[shot.row][shot.col].symbol[1] = symbol;
     current_player_shots->board[shot.row][shot.col].fg_color[1] = foreground;
-    current_player_shots->board[shot.row][shot.col].fg_color[1] = foreground;
+    current_player_shots->board[shot.row][shot.col].bg_color[1] = background;
     current_player_shots->board[shot.row][shot.col].shot = hit_status;
 
     targeted_player_ships->board[shot.row][shot.col].symbol[1] = symbol;
     targeted_player_ships->board[shot.row][shot.col].fg_color[1] = foreground;
-    targeted_player_ships->board[shot.row][shot.col].fg_color[1] = foreground;
+    targeted_player_ships->board[shot.row][shot.col].bg_color[1] = background;
     targeted_player_ships->board[shot.row][shot.col].shot = hit_status;
 }
