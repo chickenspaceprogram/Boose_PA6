@@ -3,8 +3,8 @@
 
 /**
  * Function name: rescale_color
- * Date created: 3 Nov 2024
- * Date last modified: 6 Nov 2024
+ * Date created: 2024-11-03
+ * Date last modified: 2024-11-06
  * Description: Rescales a 24-bit RGB color to an 8-bit RGB color.
  *              Effectively turns a 256x256x256 color cube into a 6x6x6 color cube.
  * Inputs:

@@ -2,8 +2,8 @@
 
 /**
  * Function name: read_number
- * Date created: 31 Oct 2024
- * Date last modified: 31 Oct 2024
+ * Date created: 2024-10-31
+ * Date last modified: 2024-10-31
  * Description: Reads a number from stdin, stopping when a ';' or an 'R' is detected.
  * Inputs: none
  * Outputs: The number that was read.

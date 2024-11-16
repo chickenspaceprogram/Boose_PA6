@@ -13,8 +13,8 @@ extern "C" {
 
 /**
  * Macro name: CLEAR_SCREEN
- * Date created: 10/19/2024
- * Date last modified: 10/25/2024
+ * Date created: 2024-10-19
+ * Date last modified: 2024-10-25
  * Description: Clears the screen.
  * Inputs: none
  * Outputs: none
@@ -25,8 +25,8 @@ extern "C" {
 
 /**
  * Macro name: CLEAR_SCREEN
- * Date created: 10/19/2024
- * Date last modified: 10/19/2024
+ * Date created: 2024-10-19
+ * Date last modified: 2024-10-19
  * Description: Clears the screen.
  * Inputs: none
  * Outputs: none
@@ -37,8 +37,8 @@ extern "C" {
 
 /**
  * Macro name: PAUSE
- * Date created: 10/24/2024
- * Date last modified: 10/24/2024
+ * Date created: 2024-10-24
+ * Date last modified: 2024-10-24
  * Description: Pauses the program's execution until the user presses any key.
  * Inputs: none
  * Outputs: none, typecasts to void to make it clear that this is solely for pausing
@@ -47,8 +47,8 @@ extern "C" {
 
 /**
  * Function name: resize_screen
- * Date created: 7 Nov 2024
- * Date last modified: 7 Nov 2024
+ * Date created: 2024-11-07
+ * Date last modified: 2024-11-07
  * Description: Resizes terminal screen to be `lines` by `cols`.
  * Inputs: 
  * `lines` : The number of lines you want the terminal to have.

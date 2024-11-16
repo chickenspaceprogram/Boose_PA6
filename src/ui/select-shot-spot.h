@@ -40,7 +40,7 @@ typedef enum {
 /**
  * Function name: select_spot
  * Date created: 2 Nov 2024
- * Date last modified: 6 Nov 2024
+ * Date last modified: 2024-11-06
  * Description: Allows the user to select a spot to shoot at on the board.
  * Inputs: 
  * `board` : The board on which to select a spot.
@@ -63,8 +63,8 @@ Position normalize_spot(Position spot, int max_row, int max_col);
 
 /**
  * Function name: set_cursor_print_info
- * Date created: 6 Nov 2024
- * Date last modified: 6 Nov 2024
+ * Date created: 2024-11-06
+ * Date last modified: 2024-11-06
  * Description: Sets the PrintInfo struct `info` to the expected values for the cursor.
  * Inputs: none
  * Outputs:

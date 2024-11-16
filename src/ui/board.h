@@ -63,8 +63,8 @@ struct board {
 
     /**
      * Function name: Board->print_board
-     * Date created: 31 Oct 2024
-     * Date last modified: 1 Nov 2024
+     * Date created: 2024-10-31
+     * Date last modified: 2024-11-01
      * Description: Prints the board.
      * Inputs: 
      * `Board *` : The `Board` struct you want to print
@@ -74,8 +74,8 @@ struct board {
 
     /**
      * Function name: Board->print_symbols
-     * Date created: 31 Oct 2024
-     * Date last modified: 1 Nov 2024
+     * Date created: 2024-10-31
+     * Date last modified: 2024-11-01
      * Description: Prints the symbols and colors to go on the board.
      * Inputs:
      * `Board *` : The `Board` struct you want to print
@@ -85,8 +85,8 @@ struct board {
 
     /**
      * Function name: Board->reprint_symbol
-     * Date created: 31 Oct 2024
-     * Date last modified: 1 Nov 2024
+     * Date created: 2024-10-31
+     * Date last modified: 2024-11-01
      * Description: Reprints the symbol at a specific location.
      * Inputs:
      * `Board *` : The `Board` struct you want to print
@@ -97,8 +97,8 @@ struct board {
 
     /**
      * Function name: print_message
-     * Date created: 31 Oct 2024
-     * Date last modified: 31 Oct 2024
+     * Date created: 2024-10-31
+     * Date last modified: 2024-10-31
      * Description: Prints a message to accompany the board.
      * Inputs: 
      * `Board *` : The `Board` struct you want to print
@@ -108,8 +108,8 @@ struct board {
 
     /**
      * Function name: set_print_message
-     * Date created: 12 Nov 2024
-     * Date last modified: 12 Nov 2024
+     * Date created: 2024-11-12
+     * Date last modified: 2024-11-12
      * Description: Sets print_message to the appropriate message.
      * Inputs: 
      * `Board *` : The `Board` struct you want to print.
@@ -121,8 +121,8 @@ struct board {
 
 /**
  * Function name: newBoard
- * Date created: 31 Oct 2024
- * Date last modified: 12 Nov 2024
+ * Date created: 2024-10-31
+ * Date last modified: 2024-11-12
  * Description: Creates a new, empty board.
  * Inputs: 
  * `msg` : An enum containing the message that should be printed with the board.
@@ -132,8 +132,8 @@ Board newBoard(BoardMsg msg);
 
 /**
  * Function name: set_hit_print_info
- * Date created: 6 Nov 2024
- * Date last modified: 14 Nov 2024
+ * Date created: 2024-11-06
+ * Date last modified: 2024-11-14
  * Description: Sets the values of a PrintInfo struct such that it is a hit.
  * Inputs: 
  * `spot_print_info` : The PrintInfo struct whose values you want to set.
@@ -143,8 +143,8 @@ PrintInfo set_hit_print_info(PrintInfo spot_print_info);
 
 /**
  * Function name: set_miss_print_info
- * Date created: 6 Nov 2024
- * Date last modified: 14 Nov 2024
+ * Date created: 2024-11-06
+ * Date last modified: 2024-11-14
  * Description: Sets the values of a PrintInfo struct such that it is a miss.
  * Inputs: 
  * `spot_print_info` : The PrintInfo struct whose values you want to set.
@@ -154,8 +154,8 @@ PrintInfo set_miss_print_info(PrintInfo spot_print_info);
 
 /**
  * Function name: print_shot_message
- * Date created: 2 Nov 2024
- * Date last modified: 2 Nov 2024
+ * Date created: 2024-11-02
+ * Date last modified: 2024-11-02
  * Description: Prints the message that accompanies the board where the user picks a space to shoot at.
  * Inputs:
  * `board` : The board whose shot message you want to print.
@@ -165,8 +165,8 @@ void print_shot_message(Board *board);
 
 /**
  * Function name: print_ship_placement_message
- * Date created: 2 Nov 2024
- * Date last modified: 2 Nov 2024
+ * Date created: 2024-11-02
+ * Date last modified: 2024-11-02
  * Description: Prints the message that accompanies the board where the user picks locations for their ships.
  * Inputs: 
  * `board` : The board accompanying the message.
@@ -176,8 +176,8 @@ void print_ship_placement_message(Board *board);
 
 /**
  * Function name: print_rand_ship_message
- * Date created: 7 Nov 2024
- * Date last modified: 7 Nov 2024
+ * Date created: 2024-11-07
+ * Date last modified: 2024-11-07
  * Description: Prints the message that accompanies the board where the user picks locations for their ships.
  * Inputs:
  * `board` : The board accompanying the message.
@@ -187,8 +187,8 @@ void print_rand_ship_message(Board *board);
 
 /**
  * Function name: print_board_disp_message
- * Date created: 7 Nov 2024
- * Date last modified: 7 Nov 2024
+ * Date created: 2024-11-07
+ * Date last modified: 2024-11-07
  * Description: Prints the message that accompanies the board where the user picks locations for their ships.
  * Inputs: 
  * `board` : The board accompanying the message.
@@ -198,8 +198,8 @@ void print_board_disp_message(Board *board);
 
 /**
  * Function name: print_ship_status_message
- * Date created: 12 Nov 2024
- * Date last modified: 12 Nov 2024
+ * Date created: 2024-11-12
+ * Date last modified: 2024-11-12
  * Description: Prints the message that accompanies the board when the user is viewing the status of their ships.
  * Inputs: 
  * `board` : The board accompanying the message.

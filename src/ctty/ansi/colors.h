@@ -34,8 +34,8 @@ typedef enum {
 
 /**
  * Struct name: RGB
- * Date created: 3 Nov 2024
- * Date last modified: 3 Nov 2024
+ * Date created: 2024-11-03
+ * Date last modified: 2024-11-03
  * Description: A struct containing fields for an RGB color.
  * Fields: 
  * `r` : The red value of the pixel. Should be 0-255.
@@ -52,8 +52,8 @@ typedef struct {
 
 /**
  * Function name: set_color
- * Date created: 3 Nov 2024
- * Date last modified: 3 Nov 2024
+ * Date created: 2024-11-03
+ * Date last modified: 2024-11-03
  * Description: Sets the color of the terminal screen.
  * Inputs: 
  * `foreground` : An enum containing the desired color of the foreground.
@@ -66,8 +66,8 @@ void set_color(Color foreground, Color background);
 
 /**
  * Function name: set_color_rgb
- * Date created: 3 Nov 2024
- * Date last modified: 3 Nov 2024
+ * Date created: 2024-11-03
+ * Date last modified: 2024-11-03
  * Description: Sets the color of the terminal screen to the closest 8-bit color possible.
  *              This is more portable than set_color_rgb, but there are only 216 colors available instead of 16 777 216 colors.
  * Inputs: 
@@ -79,8 +79,8 @@ void set_color_rgb(RGB foreground, RGB background);
 
 /**
  * Function name: set_color_256
- * Date created: 3 Nov 2024
- * Date last modified: 3 Nov 2024
+ * Date created: 2024-11-03
+ * Date last modified: 2024-11-03
  * Description: Sets the color of the terminal screen to the desired 8-bit color sequence manually.
  *              For information on what values to input for `foreground` and `background`, see https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit.
  * Inputs: 
@@ -94,8 +94,8 @@ void set_color_256(unsigned char foreground, unsigned char background);
 
 /**
  * Function name: set_color_rgb_24bit
- * Date created: 3 Nov 2024
- * Date last modified: 3 Nov 2024
+ * Date created: 2024-11-03
+ * Date last modified: 2024-11-03
  * Description: Sets the color of the terminal screen to a chosen RGB color.
  *              This does not appear to work properly in `Terminal.app` and possibly other terminal emulators as well.
  *              As such, it is best to use set_color_rgb instead of this function when exact color is unimportant.

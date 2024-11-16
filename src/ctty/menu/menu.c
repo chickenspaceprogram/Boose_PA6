@@ -10,8 +10,8 @@ typedef enum {
 
 /**
  * Function name: find_max_msg_len
- * Date created: 5 Nov 2024
- * Date last modified: 5 Nov 2024
+ * Date created: 2024-11-05
+ * Date last modified: 2024-11-05
  * Description: Finds the length of the longest message or title in the menu.
  * Inputs: 
  * `options` : An array containing all the options in the menu
@@ -23,8 +23,8 @@ static size_t find_max_msg_len(Option *options, unsigned char *title, size_t num
 
 /**
  * Function name: print_title
- * Date created: 5 Nov 2024
- * Date last modified: 5 Nov 2024
+ * Date created: 2024-11-05
+ * Date last modified: 2024-11-05
  * Description: Prints the title of the menu, including the borders around it.
  * Inputs: 
  * `title` : A string containing the title of the menu.
@@ -35,8 +35,8 @@ static void print_title(char *title, size_t table_size);
 
 /**
  * Function name: print_row
- * Date created: 5 Nov 2024
- * Date last modified: 5 Nov 2024
+ * Date created: 2024-11-05
+ * Date last modified: 2024-11-05
  * Description: Prints a single row of the table in the correct place, with normal colors.
  * Inputs: 
  * `row` : The text of the row
@@ -48,8 +48,8 @@ static void print_row(unsigned char *row, size_t position, size_t len);
 
 /**
  * Function name: inverse_row
- * Date created: 5 Nov 2024
- * Date last modified: 5 Nov 2024
+ * Date created: 2024-11-05
+ * Date last modified: 2024-11-05
  * Description: Prints a single row of the table in the correct place, with inverted colors.
  * Inputs: 
  * `row` : The text of the row
@@ -61,8 +61,8 @@ static void inverse_row(unsigned char *row, size_t position, size_t len);
 
 /**
  * Function name: print_bottom
- * Date created: 5 Nov 2024
- * Date last modified: 5 Nov 2024
+ * Date created: 2024-11-05
+ * Date last modified: 2024-11-05
  * Description: Prints the bottom of the menu.
  * Inputs: 
  * `num_rows` : The number of rows in the menu
@@ -73,8 +73,8 @@ static void print_bottom(size_t num_rows, size_t row_len);
 
 /**
  * Function name: fill_sequence_array
- * Date created: 5 Nov 2024
- * Date last modified: 5 Nov 2024
+ * Date created: 2024-11-05
+ * Date last modified: 2024-11-05
  * Description: Allocates an array of `sequence` structs on the heap, and initializes them with the correct values.
  * Inputs: 
  * `options` : An array of structs containing both the message and the sequence of characters that go along with each option.

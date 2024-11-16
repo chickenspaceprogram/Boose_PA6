@@ -11,8 +11,8 @@ typedef enum row_types {
 
 /**
  * Function name: print_board
- * Date created: 1 Nov 2024
- * Date last modified: 1 Nov 2024
+ * Date created: 2024-11-01
+ * Date last modified: 2024-11-01
  * Description: Prints the board to the terminal.
  * Inputs: 
  * `board` : A pointer to the board struct to be printed.
@@ -22,8 +22,8 @@ void print_board(Board *board);
 
 /**
  * Function name: Board->print_symbols
- * Date created: 31 Oct 2024
- * Date last modified: 1 Nov 2024
+ * Date created: 2024-10-31
+ * Date last modified: 2024-11-01
  * Description: Prints the symbols and colors to go on the board.
  * Inputs:
  * `Board *` : The `Board` struct you want to print
@@ -33,8 +33,8 @@ void print_symbols(const Board *board);
 
 /**
  * Function name: Board->reprint_symbol
- * Date created: 31 Oct 2024
- * Date last modified: 1 Nov 2024
+ * Date created: 2024-10-31
+ * Date last modified: 2024-11-01
  * Description: Reprints the symbol at a specific location.
  * Inputs:
  * `Board *` : Reprints the symbol at a specific location.
@@ -46,8 +46,8 @@ void reprint_symbol(const Board *board, int row, int col);
 
 /**
  * Function name: set_print_message
- * Date created: 12 Nov 2024
- * Date last modified: 12 Nov 2024
+ * Date created: 2024-11-12
+ * Date last modified: 2024-11-12
  * Description: Sets print_message to the appropriate message.
  * Inputs: 
  * `Board *` : The `Board` struct you want to print.
@@ -60,8 +60,8 @@ void set_print_message(Board *board, BoardMsg msg);
 
 /**
  * Function name: print_board
- * Date created: 31 Oct 2024
- * Date last modified: 1 Nov 2024
+ * Date created: 2024-10-31
+ * Date last modified: 2024-11-01
  * Description: Prints the board, except for the symbols and colors.
  * Inputs:
  * `Board *` : The `Board` struct you want to print
@@ -71,8 +71,8 @@ static void print_board_outline(Board *board);
 
 /**
  * Function name: print_board_skeleton
- * Date created: 31 Oct 2024
- * Date last modified: 31 Oct 2024
+ * Date created: 2024-10-31
+ * Date last modified: 2024-10-31
  * Description: Prints the outline of a board.
  * Inputs: none
  * Outputs: none
@@ -81,8 +81,8 @@ static void print_board_skeleton(void);
 
 /**
  * Function name: 
- * Date created: 31 Oct 2024
- * Date last modified: 31 Oct 2024
+ * Date created: 2024-10-31
+ * Date last modified: 2024-10-31
  * Description: Prints a solid, horizontal row. Assumes the terminal is already in draw mode.
  * Inputs: 
  * `type` : The type of row to print
@@ -92,8 +92,8 @@ static void print_solid_row(RowTypes type);
 
 /**
  * Function name: print_dashed_row
- * Date created: 31 Oct 2024
- * Date last modified: 31 Oct 2024
+ * Date created: 2024-10-31
+ * Date last modified: 2024-10-31
  * Description: Prints a dashed, vertical row. Assumes the terminal is already in draw mode.
  * Inputs: none
  * Outputs: none
@@ -102,8 +102,8 @@ static void print_dashed_row(void);
 
 /**
  * Function name: print_numbers
- * Date created: 1 Nov 2024
- * Date last modified: 1 Nov 2024
+ * Date created: 2024-11-01
+ * Date last modified: 2024-11-01
  * Description: Prints the numbers along the top of the board.
  *              Expects to be on the row below the last row.
  * Inputs: none
@@ -113,8 +113,8 @@ static void print_numbers(void);
 
 /**
  * Function name: print_letters
- * Date created: 1 Nov 2024
- * Date last modified: 1 Nov 2024
+ * Date created: 2024-11-01
+ * Date last modified: 2024-11-01
  * Description: Prints the letters along the side of the board.
  *              Expects to be on the numbers row.
  * Inputs: none
