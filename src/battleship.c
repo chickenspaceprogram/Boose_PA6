@@ -130,6 +130,7 @@ Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Posi
     if (check_ship_sunk(&(targeted_player->ships), targeted_player->ship_info[hit_ship])) {
         printf("\nYour shot at position "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" hit and sunk %s's "MODE_INVERSE MODE_BOLD,  current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
         targeted_player->ship_info[hit_ship].is_sunk = true;
+        update_ships_status(&(targeted_player->ships), targeted_player->ship_info);
     }
     else {
         printf("\nYour shot at position "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" hit %s's "MODE_INVERSE MODE_BOLD,  current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
