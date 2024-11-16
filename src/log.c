@@ -5,7 +5,7 @@ void print_turn_log(FILE *log, PlayerInfo *player, Position shot) {
     int col = shot.col;
     ShipsInSpace hit_type = player->ships.board[shot.row][shot.col].ship;
 
-    if (player->ships.board[shot.row][shot.col].shot == ShotHit) {
+    if (player->shots.board[shot.row][shot.col].shot == ShotHit) {
         shot_type_str = "Hit";
     }
     else {
@@ -13,15 +13,15 @@ void print_turn_log(FILE *log, PlayerInfo *player, Position shot) {
     }
 
     if (shot.col == BOARD_SIZE - 1) {
-        col = 0;
+        col = -1;
     }
-    fprintf(log, "%s : %c%d : %s", player->name, shot.row + 'A', col, shot_type_str);
+    fprintf(log, "%s : %c%d : %s", player->name, shot.row + 'A', col + 1, shot_type_str);
 
-    if (hit_type == SpaceHasNone || !(player->ship_info[hit_type].is_sunk)) {
+    if (player->shots.board[shot.row][shot.col].shot == ShotMiss || !(player->ship_info[hit_type].is_sunk)) {
         putc('\n', log);
         return;
     }
-    fputs("Sunk \n", log);
+    fputs("Sunk", log);
     print_ship_string(hit_type, log);
     fputs("!\n", log);
     

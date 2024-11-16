@@ -58,16 +58,18 @@ void play_battleship(void) {
             shot_pos[1] = play_turn(&(players[1]), &(players[0]), shot_pos[0], &(recs[1]), num_turns);
         }
         print_turn_log(log, &(players[1]), shot_pos[1]);
+        fflush(log);
     }
     if (check_all_ship_sunk(players[0].ship_info)) {
-        print_win_lose(log, players[0].name, players[1].name);
+        print_win_lose(log, players[1].name, players[0].name);
     }
     else {
-        print_win_lose(log, players[1].name, players[0].name);
+        print_win_lose(log, players[0].name, players[1].name);
     }
     print_end_game_log(log, players[0].name, recs[0].hits, recs[0].misses);
     print_end_game_log(log, players[1].name, recs[1].hits, recs[1].misses);
     fclose(log);
+    CLEAR_SCREEN();
 }
 
 void init_player_info(PlayerInfo *info, int player_num, bool is_ai) {
