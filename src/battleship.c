@@ -23,12 +23,12 @@ void play_battleship(void) {
     int player_1_first = randint(0, 1);
 
     if (player_1_first) {
-        init_player_info(&(players[0]), 1);
-        init_player_info(&(players[1]), 2);
+        init_player_info(&(players[0]), 1, false);
+        init_player_info(&(players[1]), 2, true);
     }
     else {
-        init_player_info(&(players[0]), 2);
-        init_player_info(&(players[1]), 1);
+        init_player_info(&(players[0]), 2, false);
+        init_player_info(&(players[1]), 1, false);
     }
     Position shot_pos[2] = {
         {-1, -1},
@@ -59,8 +59,15 @@ void play_battleship(void) {
     fclose(log);
 }
 
-void init_player_info(PlayerInfo *info, int player_num) {
+void init_player_info(PlayerInfo *info, int player_num, bool is_ai) {
     info->shots = newBoard(ShotMsg);
+    if (is_ai) {
+        char *str = "Computer";
+        strcpy(info->name, str);
+        info->ships_rand_place = true;
+        info->ships = init_ships_board(info->ships_rand_place);
+        rand_place_ships(&(info->ships), info->ship_info);
+    }
     for (int i = 0; i < MAX_NAME_LEN + 1; ++i) {
         info->name[i] = '\0';
     }

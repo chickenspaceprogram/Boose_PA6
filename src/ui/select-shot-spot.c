@@ -2,8 +2,8 @@
 
 /**
  * Function name: move_cursor
- * Date created: 2 Nov 2024
- * Date last modified: 2 Nov 2024
+ * Date created: 2024-11-02
+ * Date last modified: 2024-11-02
  * Description: Moves the cursor from its current position to the position it should have after the keypress described by `keypress`.
  * Inputs: 
  * `cursor_pos` : The current position of the cursor.

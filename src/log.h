@@ -12,12 +12,14 @@ typedef struct {
     int misses;
 } ShotRecords;
 
+// putting this here rather than `battleship.h` is bad, but it avoided two files having to #include each other
 typedef struct {
     Board shots;
     Board ships;
     ShipInfo ship_info[NUM_SHIPS];
     bool ships_rand_place;
     char name[MAX_NAME_LEN + 1]; // must add 1 to have space for '\0' at the end
+    bool is_ai;
 } PlayerInfo;
 
 /**

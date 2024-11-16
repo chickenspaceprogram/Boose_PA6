@@ -16,6 +16,7 @@ void place_ships(Board *board, ShipInfo *ships, int rand_ships) {
     }
     else {
         rand_place_ships(board, ships);
+        board->print_board(board);
         PAUSE();
     }
     fputs(CURSOR_ON, stdout);
@@ -48,7 +49,7 @@ void rand_place_ships(Board *board, ShipInfo *ships) {
     
     board->print_message = &print_rand_ship_message;
 
-    board->print_board(board);
+    //board->print_board(board);
     for (int i = 0; i < NUM_SHIPS; ++i) {
         ships[i].ship = (Ship) i;
         ships[i].is_sunk = false;
@@ -61,7 +62,7 @@ void rand_place_ships(Board *board, ShipInfo *ships) {
         for (int j = 0; j < NUM_SHIPS; ++j) {
             current_ship_print_info[j] = ships_print_info[i];
         }
-        print_ship(board, ships[i], current_ship_print_info);
+        place_ship_no_print(board, ships[i], current_ship_print_info);
     }
 }
 
@@ -186,6 +187,22 @@ void print_ship(Board *board, ShipInfo ship_info, PrintInfo *ship_print_info) {
         for (int i = ship_info.position.row; i < ship_info.position.row + ship_len; ++i) {
             board->board[i][ship_info.position.col] = ship_print_info[i - ship_info.position.row];
             board->reprint_symbol(board, i, ship_info.position.col);
+        }
+    }
+}
+
+// this is basically a duplicate of print_ship, but I don't have time to refactor it
+void place_ship_no_print(Board *board, ShipInfo ship_info, PrintInfo *ship_print_info) {
+    int ship_len = get_ship_len(ship_info.ship);
+
+    if (ship_info.orientation == Horizontal) {
+        for (int i = ship_info.position.col; i < ship_info.position.col + ship_len; ++i) {
+            board->board[ship_info.position.row][i] = ship_print_info[i - ship_info.position.col];
+        }
+    }
+    else {
+        for (int i = ship_info.position.row; i < ship_info.position.row + ship_len; ++i) {
+            board->board[i][ship_info.position.col] = ship_print_info[i - ship_info.position.row];
         }
     }
 }

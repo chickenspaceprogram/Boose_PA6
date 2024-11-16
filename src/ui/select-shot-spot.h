@@ -39,7 +39,7 @@ typedef enum {
 
 /**
  * Function name: select_spot
- * Date created: 2 Nov 2024
+ * Date created: 2024-11-02
  * Date last modified: 2024-11-06
  * Description: Allows the user to select a spot to shoot at on the board.
  * Inputs: 
@@ -50,8 +50,8 @@ Position select_spot(Board *board);
 
 /**
  * Function name: normalize_spot
- * Date created: 2 Nov 2024
- * Date last modified: 2 Nov 2024
+ * Date created: 2024-11-02
+ * Date last modified: 2024-11-02
  * Description: Ensures that `spot` is within the proper bounds, and if it isn't, returns a value that is.
  * Inputs: 
  * `spot` : The position to be checked.
