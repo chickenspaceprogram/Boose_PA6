@@ -5,7 +5,7 @@ You can download it [here](https://cmake.org/download/), or use your preferred p
 
 ### Configuring CMake
 
-To configure the CMake project, `cd` into the `build` directory and enter `cmake .` to configure CMake. Once you've configured CMake, you can then build the project.
+To configure the CMake project, navigate into the `build` directory using a terminal, and enter `cmake .` to configure CMake. Once you've configured CMake, you can then build the project.
 
 ### Building on *nix
 
@@ -30,11 +30,10 @@ Alternately, quit and reopen your terminal emulator.
 
 ## Potential runtime error codes:
 
-### 0x00 - invalid board color
+### 0x00 - invalid ship type
 
-This error results from the board having an incorrect color. It should not occur under normal circumstances. This error typically indicates that the hit or miss registered in the player's last turn has not been recognized.
+This error occurs if `print_ship_string()` is given an invalid ship type. It should not occur under normal circumstances.
 
 ### 0x01 - log file could not be opened
 
 This error occurs when the log file could not be opened for writing. 
-Maybe another process has the file open?
