@@ -11,6 +11,7 @@
 #include "ui/select-shot-spot.h"
 #include "log.h"
 #include "board-spot-checking.h"
+#include "ai.h"
 
 void init_player_info(PlayerInfo *info, int player_num, bool is_ai);
 

@@ -27,7 +27,7 @@ void play_battleship(void) {
         init_player_info(&(players[1]), 2, true);
     }
     else {
-        init_player_info(&(players[0]), 2, false);
+        init_player_info(&(players[0]), 2, true);
         init_player_info(&(players[1]), 1, false);
     }
     Position shot_pos[2] = {
@@ -43,9 +43,20 @@ void play_battleship(void) {
     };
 
     for (int num_turns = 1; !check_all_ship_sunk(players[0].ship_info) && !check_all_ship_sunk(players[1].ship_info); ++num_turns) {
-        shot_pos[0] = play_turn(&(players[0]), &(players[1]), shot_pos[1], &(recs[0]), num_turns);
+        if (players[0].is_ai) {
+            shot_pos[0] = ai_play_turn(&(players[0]), &(players[1]), &(recs[0]));
+        }
+        else {
+            shot_pos[0] = play_turn(&(players[0]), &(players[1]), shot_pos[1], &(recs[0]), num_turns);
+        }
         print_turn_log(log, &(players[0]), shot_pos[0]);
-        shot_pos[1] = play_turn(&(players[1]), &(players[0]), shot_pos[0], &(recs[1]), num_turns);
+
+        if (players[1].is_ai) {
+            shot_pos[1] = ai_play_turn(&(players[1]), &(players[0]), &(recs[1]));
+        }
+        else {
+            shot_pos[1] = play_turn(&(players[1]), &(players[0]), shot_pos[0], &(recs[1]), num_turns);
+        }
         print_turn_log(log, &(players[1]), shot_pos[1]);
     }
     if (check_all_ship_sunk(players[0].ship_info)) {
@@ -61,12 +72,14 @@ void play_battleship(void) {
 
 void init_player_info(PlayerInfo *info, int player_num, bool is_ai) {
     info->shots = newBoard(ShotMsg);
+    info->is_ai = is_ai;
     if (is_ai) {
         char *str = "Computer";
         strcpy(info->name, str);
         info->ships_rand_place = true;
         info->ships = init_ships_board(info->ships_rand_place);
         rand_place_ships(&(info->ships), info->ship_info);
+        return;
     }
     for (int i = 0; i < MAX_NAME_LEN + 1; ++i) {
         info->name[i] = '\0';
@@ -120,7 +133,7 @@ Position play_turn(PlayerInfo *current_player, PlayerInfo *targeted_player, Posi
         ++(records->misses);
         PAUSE();
         CLEAR_SCREEN();
-        printf("\nYour shot at position "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" missed.\n\nPress any key to start %s's turn . . .", current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
+        printf("\nYour shot at position "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" missed.\n\nPress any key to let %s play . . .", current_shot.row + 'A', current_shot.col + 1, targeted_player->name);
         PAUSE();
         CLEAR_SCREEN();
         fputs(CURSOR_ON, stdout);
@@ -187,6 +200,11 @@ void print_turn_welcome(PlayerInfo *player, Position last_shot, int turn_num) {
         printf("Your opponent shot at space "MODE_INVERSE MODE_BOLD"%c%d"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET" and "MODE_INVERSE MODE_BOLD, last_shot.row + 'A', col);
         if (player->ships.board[last_shot.row][last_shot.col].symbol[1] == 'm') {
             fputs("missed"MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET".\n\n", stdout);
+            fputs("Status of ships:\n\n", stdout);
+            // should've been a function but I'm lazy
+            for (int i = 0; i < NUM_SHIPS; ++i) {
+                print_ship_status(&(player->ships), player->ship_info[i]);
+            }
             return;
         }
         fputs(MODE_INVERSE_RESET MODE_BOLD_FAINT_RESET"hit your "MODE_INVERSE MODE_BOLD, stdout);

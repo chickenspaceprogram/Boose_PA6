@@ -14,5 +14,7 @@ add_executable(Boose_PA6
         ../src/log.h
         ../src/board-spot-checking.c
         ../src/board-spot-checking.h
+        ../src/ai.h
+        ../src/ai.c
 )
 target_link_libraries(Boose_PA6 ctty ui)

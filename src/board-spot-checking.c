@@ -12,7 +12,7 @@ bool check_ship_sunk(Board *ships_board, ShipInfo ship) {
             break;
         case Vertical:
             for (int i = 0; i < ship_len; ++i) {
-                if (ships_board->board[ship.position.row + i][ship.position.col].symbol[1] != ShotHit) {
+                if (ships_board->board[ship.position.row + i][ship.position.col].shot != ShotHit) {
                     return false;
                 }
             }
@@ -23,11 +23,11 @@ bool check_ship_sunk(Board *ships_board, ShipInfo ship) {
 
 bool check_all_ship_sunk(ShipInfo *ships) {
     for (int i = 0; i < NUM_SHIPS; ++i) {
-        if (ships[i].is_sunk) {
-            return true;
+        if (!(ships[i].is_sunk)) {
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 int check_for_hit(Board *other_player_ships, Position shot) {
