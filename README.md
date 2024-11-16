@@ -28,6 +28,8 @@ If you decide to exit this program forcefully using Ctrl+C, your terminal settin
 To fix this on *nix systems, enter the command `reset` into the terminal.
 Alternately, quit and reopen your terminal emulator.
 
+The log file should be in the directory you ran the executable from (if you're on Unix) or in build/ (if you're on Windows).
+
 ## Code explanation
 
 Most of the game logic is in `battleship.c`, with bits broken out into other files, like `rand.c`, `ai.c`, `log.c`, and `board-spot-checking.c`. The former three do what is expected, the latter contains a bunch of functions for doing things like checking the status of shots, checking whether ships are sunk, that sort of stuff. Some of this logic should've been broken off into its own subdirectory to make things neater but I didn't bother.
