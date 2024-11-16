@@ -15,7 +15,7 @@ extern "C" {
 /**
 * Function name: print_file
 * Date created: 2024-09-25
-* Date last modified: 2024-11-12
+* Date last modified: 2024-11-15
 * Description:	Prints the contents of a file to stdout.
 *				This is used to print the rules and the main menu because a bunch of printf() statements would've been extremely ugly
 * Inputs:

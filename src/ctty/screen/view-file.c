@@ -10,9 +10,9 @@ void print_file(char *filename, int clear_screen) {
 	FILE* input = fopen(filename, "r");
 	if (input == NULL) {
 		printf("An error occurred while loading the file `%s`.\n\nPress any key to continue . . . ", filename);
-		CURSOR_OFF();
+		printf(CURSOR_OFF);
 		PAUSE();
-		CURSOR_ON();
+		printf(CURSOR_ON);
 		return;
 	}
 	
