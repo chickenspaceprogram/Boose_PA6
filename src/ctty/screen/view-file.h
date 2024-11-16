@@ -10,6 +10,7 @@ extern "C" {
 #include <string.h>
 
 #include "screen.h"
+#include "../ansi/cursor.h"
 
 /**
 * Function name: print_file
