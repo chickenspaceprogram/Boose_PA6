@@ -9,3 +9,5 @@ build/**
 !CMakeLists.txt
 debug
 battleship.log
+linecount.sh
+zip.sh

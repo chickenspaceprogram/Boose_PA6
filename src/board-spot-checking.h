@@ -7,8 +7,8 @@
 
 /**
  * Function name: check_ship_sunk
- * Date created: 7 Nov 2024
- * Date last modified: 14 Nov 2024
+ * Date created: 2024-11-7
+ * Date last modified: 2024-11-14
  * Description: Checks whether a ship has been sunk.
  * Inputs: 
  * `ships_board` : A pointer to the board containing the ships.
@@ -19,8 +19,8 @@ bool check_ship_sunk(Board *ships_board, ShipInfo ship);
 
 /**
  * Function name: check_all_ship_sunk
- * Date created: 13 Nov 2024
- * Date last modified: 13 Nov 2024
+ * Date created: 2024-11-13
+ * Date last modified: 2024-11-13
  * Description: Checks whether all ships have been sunk.
  * Inputs: 
  * `ship` : An array of ShipInfo structs containing the info of the ships.
@@ -30,18 +30,20 @@ bool check_all_ship_sunk(ShipInfo *ships);
 
 /**
  * Function name: check_for_hit
- * Date created: 13 Nov 2024
- * Date last modified: 14 Nov 2024 
+ * Date created: 2024-11-13
+ * Date last modified: 2024-11-14
  * Description: Checks whether a shot in a specific position hits a ship.
  * Inputs: 
+ * `other_player_ships` : The other player's ships board.
+ * `shot` : The position of the shot.
  * Outputs: The index of the ship that was hit if there was a hit, otherwise -1.
  */
 int check_for_hit(Board *other_player_ships, Position shot);
 
 /**
  * Function name: update_ship_status
- * Date created: 13 Nov 2024
- * Date last modified: 14 Nov 2024
+ * Date created: 2024-11-13
+ * Date last modified: 2024-11-14
  * Description: Updates the status of each ship, setting it to floating or sunk if need be.
  * Inputs: 
  * `ships_board` : The board where the ships are.
@@ -50,6 +52,18 @@ int check_for_hit(Board *other_player_ships, Position shot);
  */
 void update_ships_status(Board *ships_board, ShipInfo *ships);
 
+/**
+ * Function name: set_spot_hit_miss
+ * Date created: 2024-11-14
+ * Date last modified: 2024-11-14
+ * Description: Sets the spot to either a hit or a miss.
+ * Inputs: 
+ * `current_player_shots` : The shots-board of the current player
+ * `targeted_player_ships` : The ships-board of the targeted player
+ * `shot` : The position of the shot
+ * `is_hit` : Whether the shot is a hit or a miss
+ * Outputs: none
+ */
 void set_spot_hit_miss(Board *current_player_shots, Board *targeted_player_ships, Position shot, bool is_hit);
 
 #endif

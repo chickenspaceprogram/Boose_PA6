@@ -28,6 +28,14 @@ If you decide to exit this program forcefully using Ctrl+C, your terminal settin
 To fix this on *nix systems, enter the command `reset` into the terminal.
 Alternately, quit and reopen your terminal emulator.
 
+## Code explanation
+
+Most of the game logic is in `battleship.c`, with bits broken out into other files, like `rand.c`, `ai.c`, `log.c`, and `board-spot-checking.c`. The former three do what is expected, the latter contains a bunch of functions for doing things like checking the status of shots, checking whether ships are sunk, that sort of stuff. Some of this logic should've been broken off into its own subdirectory to make things neater but I didn't bother.
+
+The `src/ui/` directory handles user input. `board.c` handles printing the game boards to the terminal, `place-ships.c` handles placing ships on the boards, and `select-shot-spot.c` handles selecting a spot on the board to shoot. `space-print-info.h` defines some useful preprocessor macros.
+
+`src/ctty/` is my cross-platform terminal graphics library, available [here](https://github.com/chickenspaceprogram/ctty) under the MIT License. View the readme in that folder for its documentation.
+
 ## Potential runtime error codes:
 
 ### 0x00 - invalid ship type
